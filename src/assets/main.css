@@ -1,35 +1,24 @@
-@import './base.css';
+@import "tailwindcss";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+/* You define a @theme that can be applied to utility classes */
+/* You can define base styling and utilized the specialized CSS theme variables as well */
+/* For now, I am just going to stick with this */
+
+@theme {
+    --color-steel-100: #f8f9fa;
+    --color-steel-200: #e9ecef;
+    --color-steel-300: #dee2e6;
+    --color-steel-400: #ced4da;
+    --color-steel-500: #adb5bd;
+    --color-steel-600: #6c757d;
+    --color-steel-700: #495057;
+    --color-steel-800: #343a40;
+    --color-steel-900: #212529;
 }
+ 
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+@layer base {
+    body {
+        background-color: var(--color-steel-700);
+    }
 }

@@ -1,11 +1,21 @@
 import express from 'express'
+import cors from 'cors'
 import tmdbRoutes from './routes/tmdbRoutes.js'
 const app = express()
 const port = 3000
 
+const corsConfigOptions = {
+  origin: 'http://localhost:5173',
+  optionsSuccessStatus: 200
+}
+
+app.use(cors(corsConfigOptions))
+
 app.get('/', (req, res) => {
+    console.log("received")
     res.send("Hello world!")
 })
+
 
 app.use('/api/tmdb', tmdbRoutes)
 

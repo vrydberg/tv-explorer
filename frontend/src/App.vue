@@ -8,9 +8,39 @@ import SearchResults from './components/SearchResults.vue';
 import TvShowCard from './components/TvShowCard.vue';
 
 const searchValue = ref('')
+const fetchedTvShows = ref([])
 
-const updateSearchValue = (val) => {
+const updateSearchValue = async (val) => {
   searchValue.value = val
+
+  // Check if search value empty
+  if (val.length === 0 || val.length < 3) {
+    return
+  }
+
+  // Server uri api tmdb
+  const url = `http://localhost:3000/api/tmdb/search/${searchValue.value}`
+
+
+  console.log("inside here")
+  try {
+    const response = await fetch(url)
+    console.log(response)
+    if (!response.ok) {
+      throw new Error("Response status:" + response.status)      
+    }
+
+    const result = await response.json();  
+
+    console.log(result)
+    
+    fetchedTvShows.value = result || []
+  } catch (error) {
+    console.error(error.message);
+
+  }
+
+
 }
 
 </script>
@@ -30,7 +60,7 @@ const updateSearchValue = (val) => {
         @search-changed="updateSearchValue($event)">
       </SearchBar>
       <SearchResults
-        :searchQuery="searchValue">
+        :searchQuery="fetchedTvShows">
       </SearchResults>
 
     <!-- <TvShowCard></TvShowCard> -->

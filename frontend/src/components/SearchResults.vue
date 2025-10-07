@@ -12,7 +12,14 @@ const props = defineProps(['searchQuery'])
   <div class="flex justify-center px-20 py-6">
 
     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full max-w-7xl ">
-        <TvShowCard v-for="c in searchQuery.length"></TvShowCard>        
+        <!-- <TvShowCard v-for="c in searchQuery.length"></TvShowCard> -->
+        <TvShowCard
+          v-for="s in searchQuery"
+          :key="s.id"
+          :show="s"
+          >
+        </TvShowCard>
+
         
     </div>
 

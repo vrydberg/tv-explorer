@@ -1,6 +1,6 @@
 import './assets/main.css'
 import 'primeicons/primeicons.css'
-
+import router from './router'
 import { createApp } from 'vue'
 // import { createPinia } from 'pinia'
 
@@ -18,5 +18,6 @@ app.config.errorHandler = (err, vm, info) => {
   console.error("Additional info:", info);
 };
 
+app.use(router)
 
 app.mount('#app')

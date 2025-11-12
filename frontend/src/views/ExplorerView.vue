@@ -1,21 +1,38 @@
 <script setup>
-// import { RouterLink, RouterView } from 'vue-router'
-
-import { ref } from 'vue';
-import SearchBar from '../components/SearchBar.vue'
+import { onMounted, ref } from 'vue';
+// import SearchBar from '../components/SearchBar.vue'
 import SearchResults from '../components/SearchResults.vue';
+// import Hero from '@/components/Hero.vue';
 
+const searchedTvShows = ref([])
+const trendingTvShows = ref([])
 
-// THIS IS GOING TO BE EXPLORER.VUE NOT APP.VUE
-// const searchValue = ref('')
-const fetchedTvShows = ref([])
+onMounted( async () => {
+  try {
+
+    const url = `http://localhost:3000/api/tmdb/trending`
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      throw new Error("Response status:" + response.status)      
+    }
+
+    
+    const result = await response.json();
+    console.log(result)
+
+    trendingTvShows.value = result || []
+  } catch (error) {
+    console.log(error.message)
+  }
+})
 
 const updateSearchResults = async (val) => {
   
   // Validate search value before submitting request
   // if (val.length === 0 || val.length < 3) {
   if (val.length === 0) {
-    fetchedTvShows.value = []
+    searchedTvShows.value = []
     return
   }
 
@@ -33,32 +50,35 @@ const updateSearchResults = async (val) => {
 
     console.log(result)
     
-    fetchedTvShows.value = result || []
+    searchedTvShows.value = result || []
   } catch (error) {
     console.error(error.message);
 
   }
-
-
 }
 
 
 </script>
 
 <template>
-  <!-- <div class="flex flex-col border-4 min-h-screen border-red-400"> -->
+  <SearchResults
+        :trendingQuery="trendingTvShows"
+        :searchQuery="searchedTvShows">
+  </SearchResults>
 
-  <div class="flex flex-1 flex-col">
-    <!-- <main class="flex flex-1 flex-col border-4 border-sky-300"> -->
+  <!-- // Below is original explorer view -->
+  <!-- <div class="flex flex-1 flex-col">
       <SearchBar
-        class="mt-20"
+        class="mt-6"
         @search-changed="updateSearchResults($event)">
       </SearchBar>
       <SearchResults
-        :searchQuery="fetchedTvShows">
+        class="mt-6"
+        :trendingQuery="trendingTvShows"
+        :searchQuery="searchedTvShows">
       </SearchResults>
-  </div>
-  
+  </div> -->
+
 </template>
 
 <style></style>

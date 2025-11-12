@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ExplorerView from '../views/ExplorerView.vue'
+import TvShowView from '@/views/TvShowView.vue'
 
 
 const router = createRouter({
@@ -12,11 +13,11 @@ const router = createRouter({
       component: ExplorerView,
     },
 
-    // {
-    //   path: '/tv/:id',
-    //   name: 'tvShow',
-    //   component: tvShowView
-    // }
+    {
+      path: '/tv/:id',
+      name: 'tvShow',
+      component: TvShowView
+    }
     // {
 
 

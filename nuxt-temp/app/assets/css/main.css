@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+/* You define a @theme that can be applied to utility classes */
+/* You can define base styling and utilized the specialized CSS theme variables as well */
+/* For now, I am just going to stick with this */
+
+@theme {
+
+    /* --font-rubik: "Rubik", sans-serif; / */
+    --color-steel-100: #f8f9fa;
+    --color-steel-200: #e9ecef;
+    --color-steel-300: #dee2e6;
+    --color-steel-400: #ced4da;
+    --color-steel-500: #adb5bd;
+    --color-steel-600: #6c757d;
+    --color-steel-700: #495057;
+    --color-steel-800: #343a40;
+    --color-steel-900: #212529;
+    --color-steel-1000: #0a0a0b;
+
+    /* 0a0a0b */
+    
+
+    --color-violet-900: #10002B; /* darkest */
+    --color-violet-800: #240046;
+    --color-violet-700: #3C096C;
+    --color-violet-600: #5A189A;
+    --color-violet-500: #7B2CBF;
+    --color-violet-400: #9D4EDD;
+    --color-violet-300: #C77DFF;
+    --color-violet-200: #E0AAFF; /* lightest */
+
+    --color-sky: #7AD7EE;
+    --color-lime: #B9EB7D;
+    --color-banana: #FFE077;
+
+    /* eigengrau */
+    --color-eigengrau-900: #14181c;
+    --color-eigengrau-800: #272b2f;
+    --color-eigengrau-700: #3b3f43;
+    --color-eigengrau-600: #515458;
+    --color-eigengrau-500: #676a6d;
+    --color-eigengrau-400: #7f8184;
+    --color-eigengrau-300: #97999b;
+    --color-eigengrau-200: #b0b2b3;
+    --color-eigengrau-100: #cacbcc;
+    --color-eigengrau-50:  #e4e5e5;
+}
+ 
+
+
+@layer base {
+    html {
+        /* font-family: "Rubik", sans-serif; */
+        /* font-family: "Roboto", sans-serif; */
+        letter-spacing: 0.025em; 
+    }
+
+    body {
+        /* background-color: #14181c; */
+        background-color: #272b2f;
+        /* background-color: var(--color-steel-900); */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* h1 { font-size: var(--text-1xl); }
+    h2 { font-size: var(--heading-2); }
+    h3 { font-size: var(--heading-3); }
+    h4 { font-size: var(--heading-4); }
+    h5 { font-size: var(--heading-5); }
+    h6 { font-size: var(--heading-6); } */
+}

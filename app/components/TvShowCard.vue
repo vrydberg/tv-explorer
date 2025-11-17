@@ -7,9 +7,11 @@
     <div class="w-full">
         <div class="aspect-2/3">
             <img 
-                class="w-full h-full object-cover rounded-md cursor-pointer hover:border-3 hover:border-indigo-600"
-                :src="`https://image.tmdb.org/t/p/w500/${show.poster}`"
-            >
+                    class="w-full h-full object-cover rounded-md cursor-pointer hover:border-3 hover:border-indigo-600"
+                    :src="`https://image.tmdb.org/t/p/w500/${show.poster}`"
+                    draggable="false"
+                >
+            
         </div>
 
         <!-- <div class="flex flex-col justify-between mt-2 items-center"> -->

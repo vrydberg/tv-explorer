@@ -58,6 +58,7 @@ export const handleSearchTvShow = async (req, res, next) => {
 }
 
 export const handleTrendingTvShow = async (req, res, next) => {
+    console.log("testing 123!")
     try {
         const totalPages = 3
         const pages = []

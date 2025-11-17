@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 // import SearchBar from '../components/SearchBar.vue'
-import SearchResults from '../components/SearchResults.vue';
+import SearchResults from '../../../nuxt-temp/app/components/TrendingResults.vue';
 // import Hero from '@/components/Hero.vue';
 
 const searchedTvShows = ref([])

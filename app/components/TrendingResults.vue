@@ -10,6 +10,15 @@ const props = defineProps(['trendingQuery', 'searchQuery'])
 onMounted(() => {
   updateWindowSize()
   window.addEventListener('resize', updateWindowSize)
+  document.querySelectorAll('.carousel__slide').forEach(slide => {
+    slide.addEventListener('pointerdown', e => console.log('slide pointerdown', e));
+    slide.addEventListener('pointerup', e => console.log('slide pointerup', e));
+    slide.addEventListener('click', e => console.log('slide click', e));
+  });
+
+  document.querySelectorAll('.carousel__slide a').forEach(link => {
+    link.addEventListener('click', e => console.log('link click', e));
+  });
 })
 
 onUnmounted(() => {
@@ -21,6 +30,9 @@ const windowSize = ref({
   width: 0
 })
 
+
+
+
 const carouselRef = ref()
 const carouselConfig = {
   height: 'auto',
@@ -30,6 +42,8 @@ const carouselConfig = {
   itemsToShow: 3,
   snapAlign: 'start',
   wrapAround: true,
+  mouseDrag: false, 
+  touchDrag: false,
   breakpoints: {
     640: {
       itemsToShow: 4,
@@ -54,7 +68,7 @@ const carouselConfig = {
       itemsToShow: 8,
       gap: 32,
       // itemstoScroll: 6,
-      wrapAround: true,
+      wrapAround: false,
       snapAlign: 'start'
     }
   },
@@ -187,14 +201,19 @@ const setActivePage = (index) => {
       xv-if="searchQuery.length === 0"
       class="w-full max-w-6xl">
     
+    
       <Carousel
           v-bind="carouselConfig"
-          v-model="currentSlide"
           class="w-full max-w-6xl"
           ref="carouselRef"
         >        
           <Slide v-for="s in trendingQuery" :key="s">
-            <TvShowCard :show="s" />
+            <TvShowCard 
+              :show="s"
+              @click="navigateTo(`/shows/${s.id}`)"  
+            />
+            
+            
           </Slide>
       </Carousel>      
     

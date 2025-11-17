@@ -1,6 +1,6 @@
 // Route handler for api/tmdb
 import express from 'express'
-import { handleSearchTvShow } from '../controllers/tmdbController.js'
+import { handleSearchTvShow, handleTrendingTvShow } from '../controllers/tmdbController.js'
 
 const router = express.Router()
 
@@ -9,6 +9,8 @@ const router = express.Router()
 // router.get('/', )
 
 router.get('/search/:searchValue', handleSearchTvShow)
+
+router.get('/trending', handleTrendingTvShow)
 
 export default router;
 

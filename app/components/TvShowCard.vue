@@ -32,7 +32,7 @@ const stars = computed(() => {
     <div class="w-full">
         <div class="aspect-2/3">
             <img 
-                    class="w-full h-full object-cover rounded-md cursor-pointer hover:border-3 hover:border-indigo-600"
+                    class="w-full h-full object-cover rounded-md cursor-pointer hover:border-2 hover:border-indigo-600"
                     :src="`https://image.tmdb.org/t/p/w500/${show.poster}`"
                     draggable="false"
                 >
@@ -43,7 +43,7 @@ const stars = computed(() => {
             class="flex flex-col mt-2 gap-1 items-start">
             <h3 class="w-full truncate font-medium text-sm">{{ show.title }}</h3>
             
-            <div class="w-full flex gap-2">
+            <div class="w-full flex gap-2 items-center">
                 <div class="flex gap-1">
 
                     <RatingStar

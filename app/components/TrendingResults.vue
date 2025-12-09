@@ -4,21 +4,11 @@ import 'vue3-carousel/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 
-const props = defineProps(['trendingQuery', 'searchQuery'])
-
+const props = defineProps(['trendingQuery'])
 
 onMounted(() => {
   updateWindowSize()
   window.addEventListener('resize', updateWindowSize)
-  document.querySelectorAll('.carousel__slide').forEach(slide => {
-    slide.addEventListener('pointerdown', e => console.log('slide pointerdown', e));
-    slide.addEventListener('pointerup', e => console.log('slide pointerup', e));
-    slide.addEventListener('click', e => console.log('slide click', e));
-  });
-
-  document.querySelectorAll('.carousel__slide a').forEach(link => {
-    link.addEventListener('click', e => console.log('link click', e));
-  });
 })
 
 onUnmounted(() => {
@@ -30,9 +20,6 @@ const windowSize = ref({
   width: 0
 })
 
-
-
-
 const carouselRef = ref()
 const carouselConfig = {
   height: 'auto',
@@ -42,34 +29,34 @@ const carouselConfig = {
   itemsToShow: 3,
   snapAlign: 'start',
   wrapAround: true,
-  mouseDrag: false, 
-  touchDrag: false,
+  mouseDrag: true, 
+  touchDrag: true,
   breakpoints: {
     640: {
       itemsToShow: 4,
-      // itemstoScroll: 1,
       gap: 20,
       snapAlign: 'start'
     },
     768: {
       itemsToShow: 5,
-      // itemstoScroll: 3,
       gap: 24,
       snapAlign: 'start'
     },
     1024: {
       itemsToShow: 6,
       gap: 28,
-      // itemstoScroll: 6,
       wrapAround: false,
-      snapAlign: 'start'
+      snapAlign: 'start',
+      mouseDrag: false,
+      touchDrag: false,
     },
     1536: {
-      itemsToShow: 8,
+      itemsToShow: 6,
       gap: 32,
-      // itemstoScroll: 6,
       wrapAround: false,
-      snapAlign: 'start'
+      snapAlign: 'start',
+      mouseDrag: false,
+      touchDrag: false,
     }
   },
   
@@ -102,8 +89,6 @@ const trendingPages = computed(() => {
   return Math.ceil(props.trendingQuery.length / slidesPerPage.value)
 })
 
-
-
 const next = () => {
   currentPageIndex.value += 1
   
@@ -134,17 +119,13 @@ const setActivePage = (index) => {
 
 <template>
   <div class="w-full flex justify-between items-center flex-col px-6 gap-4">
-  
-    <div class="w-full max-w-6xl flex items-start justify-between ">
-
-
+    <div class="w-full max-w-7xl flex items-start justify-between ">
       <h3 class="text-md leading-none mt-0 mb-0 pt-0 pb-0 flex font-medium text-white lg:text-md">Trending</h3>
 
       <div class="hidden lg:flex justify-center items-center gap-4">
-      
         <button
-            class="flex items-center justify-center bg-steel-700 text-white rounded-3xl cursor-pointer p-1 hover:bg-eigengrau-500"
-            @click="prev()"
+          class="flex items-center justify-center bg-steel-700 text-white rounded-3xl cursor-pointer p-1 hover:bg-eigengrau-500"
+          @click="prev()"
           >
             <svg
               class="w-12 h-2"
@@ -161,8 +142,6 @@ const setActivePage = (index) => {
               />
             </svg>
           </button>
-
-      
 
         <ul class="flex gap-2">
           <li
@@ -198,40 +177,23 @@ const setActivePage = (index) => {
     </div>
       
     <div 
-      xv-if="searchQuery.length === 0"
-      class="w-full max-w-6xl">
-    
-    
+      class="w-full max-w-7xl">
       <Carousel
           v-bind="carouselConfig"
-          class="w-full max-w-6xl"
+          class="w-full max-w-7xl"
           ref="carouselRef"
         >        
-          <Slide v-for="s in trendingQuery" :key="s">
+          <Slide class="border-3 border-transparent hover:border-indigo-600 rounded-lg" v-for="s in trendingQuery" :key="s">
             <TvShowCard 
               :show="s"
+              :extraInfo="true"
+              :inCarousel="true"
               @click="navigateTo(`/shows/${s.id}`)"  
             />
-            
-            
           </Slide>
       </Carousel>      
-    
     </div>
-
-    
-    <!-- <div 
-      v-else
-      class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full max-w-7xl">
-      <TvShowCard
-        v-for="s in searchQuery"
-        :key="s.id"
-        :show="s"
-        >
-      </TvShowCard>
-    </div> -->
   </div>
 </template>
-
 
 <style></style>

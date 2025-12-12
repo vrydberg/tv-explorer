@@ -9,6 +9,9 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ]
+  },
+  runtimeConfig: {
+    tmdbApiKey: process.env.TMDB_API_KEY
   }
 })
 

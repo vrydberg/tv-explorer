@@ -1,6 +1,4 @@
-const TMDB_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOTVhODkxY2UwMWI3OGExZGI4NDNiZDg3NGRmYTM4ZCIsIm5iZiI6MTc1OTQwOTM0Mi4zNjQsInN1YiI6IjY4ZGU3NGJlOWJmZGFhZGRiOTk5MWEyZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.47HvFNBpun-3pS4wTrEQJdAtw5k4jfQuk_iBtihMO2w'
-
-const trendingTvShow = async (page) => {
+const trendingTvShow = async (page, tmdbApiKey) => {
   const time_window = 'week' // can be 'day'
 
   const url = `https://api.themoviedb.org/3/trending/tv/${time_window}?language=en-US&page=${page}`
@@ -9,7 +7,7 @@ const trendingTvShow = async (page) => {
       method: 'GET',
       headers: {
           accept: 'application/json',
-          Authorization: `Bearer ${TMDB_API_KEY}`
+          Authorization: `Bearer ${tmdbApiKey}`
       }
   }
 
@@ -18,6 +16,7 @@ const trendingTvShow = async (page) => {
 }
 
 export default defineEventHandler(async (event) => {
+  const { tmdbApiKey } = useRuntimeConfig(event)
   try {
     const totalPages = 3
     const pages = []
@@ -26,7 +25,7 @@ export default defineEventHandler(async (event) => {
       pages.push(i)
     }
 
-    const requests = pages.map((page) => trendingTvShow(page))
+    const requests = pages.map((page) => trendingTvShow(page, tmdbApiKey))
 
     const tvShowDataPages = await Promise.all(requests)
     const tvShowData = []
@@ -46,7 +45,7 @@ export default defineEventHandler(async (event) => {
       poster: show.poster_path,
     })) 
     
-    // console.log(filteredTop20)
+    console.log(filteredTop24)
     return filteredTop24
 } catch (error) {
     console.log("ERror: ", error)

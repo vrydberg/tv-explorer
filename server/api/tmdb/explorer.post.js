@@ -1,6 +1,3 @@
-const TMDB_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOTVhODkxY2UwMWI3OGExZGI4NDNiZDg3NGRmYTM4ZCIsIm5iZiI6MTc1OTQwOTM0Mi4zNjQsInN1YiI6IjY4ZGU3NGJlOWJmZGFhZGRiOTk5MWEyZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.47HvFNBpun-3pS4wTrEQJdAtw5k4jfQuk_iBtihMO2w'
-
-
 const buildQuery = (obj) => {
   const processedQuery = Object.entries(obj)
     .filter(([key, value]) => value != null && value !== '' && (!Array.isArray(value) || value.length > 0))
@@ -17,7 +14,7 @@ const formatShow = (show) => ({
 })
 
 export default defineEventHandler(async (event) => {
-  console.log("alohamora")
+  const { tmdbApiKey } = useRuntimeConfig(event)
   try {
     const body = await readBody(event)
     console.log(body)
@@ -27,7 +24,7 @@ export default defineEventHandler(async (event) => {
     const config = {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${TMDB_API_KEY}`,
+            Authorization: `Bearer ${tmdbApiKey}`,
             accept: 'application/json'
         },
         query: processedQuery

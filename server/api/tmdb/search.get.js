@@ -1,6 +1,3 @@
-// Placeholder API key - actual key is .env
-const TMDB_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOTVhODkxY2UwMWI3OGExZGI4NDNiZDg3NGRmYTM4ZCIsIm5iZiI6MTc1OTQwOTM0Mi4zNjQsInN1YiI6IjY4ZGU3NGJlOWJmZGFhZGRiOTk5MWEyZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.47HvFNBpun-3pS4wTrEQJdAtw5k4jfQuk_iBtihMO2w'
-
 /**
  * External API request to TMDB to retrieve TV show data based on a user's search input. Retrieves most relevant
  * TV shows for a specific page.
@@ -8,14 +5,14 @@ const TMDB_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOTVhODkxY2UwMWI3OGExZGI4N
  * @param {*} page - Page number query parameter
  * @returns - Array of objects representing TV shows
  */
-const searchTvShow = async (searchValue, page) => {
+const searchTvShow = async (searchValue, page, tmdbApiKey) => {
   const url = `https://api.themoviedb.org/3/search/tv?query=${searchValue}&page=${page}`
   
   const config = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: `Bearer ${TMDB_API_KEY}`
+      Authorization: `Bearer ${tmdbApiKey}`
     }
   }
 
@@ -29,8 +26,8 @@ const searchTvShow = async (searchValue, page) => {
  * Executes parallel TMDB requests to get TV show data across different pages. Returns filtered top 10 (custom).
  */
 export default defineEventHandler(async (event) => {
+  const { tmdbApiKey } = useRuntimeConfig(event)
   try {
-
     const queryParams = getQuery(event)
     const searchValue = queryParams.query
     
@@ -41,7 +38,7 @@ export default defineEventHandler(async (event) => {
         pages.push(i)
     }
 
-    const requests = pages.map((page) => searchTvShow(searchValue, page))
+    const requests = pages.map((page) => searchTvShow(searchValue, page, tmdbApiKey))
 
     const tvShowDataPages = await Promise.all(requests)
     const tvShowData = []

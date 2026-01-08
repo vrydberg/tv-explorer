@@ -9,6 +9,18 @@ const id = route.params.id
 const { data: showData, error } = await useFetch(`/api/tmdb/shows/${id}`);
 const placeholderBackdrop = ''
 
+
+const sortedEpisodes = computed(() => {
+  if (showData.value) {
+    const ratings = showData.value.ratings
+    const now = new Date()
+    const sortedEpisodes = ratings.map(season => season.episodes).flat()
+                                  .filter((episode) => new Date(episode.air_date) <= now)
+                                  .sort((a, b) => b.rating - a.rating)
+    return sortedEpisodes
+  }
+})
+
 </script>
 
 <template>
@@ -36,39 +48,38 @@ const placeholderBackdrop = ''
       <div class="grid lg:grid-cols-4 gap-4 w-full">
 
         <InfographicCard title="Highest Rated Episodes">
-          <ul class="flex flex-col w-full gap-2">
-            <li class="flex justify-between items-center gap-3">
-              <p class="text-xs font-medium text-gray-400 w-3/4 truncate"><span class="text-xs text-gray-400 pr-2">S2E1</span>King in t aslkdasd.ajsdlkajsldkjaklsjjalskdjklajsdkl jaskljd klasdaskdljalksjdakjsdlkajslkdjalksjhe North</p>
-              <span class="text-xs font-medium text-emerald-600 shrink-0">8.7</span>
-            </li>
-            
-            <li class="flex justify-between items-center gap-3">
-              <p class="text-xs font-medium text-gray-400"><span class="text-xs text-gray-400 pr-2">S2E1</span>King in the North</p>
-              <span class="text-xs font-medium text-emerald-600 shrink-0">8.7</span>
-            </li>
-
-            <li class="flex justify-between items-center gap-3">
-              <p class="text-xs font-medium text-gray-400"><span class="text-xs text-gray-400 pr-2">S2E1</span>King in the North</p>
-              <span class="text-xs font-medium text-emerald-600 shrink-0">8.7</span>
+          <ul class="flex flex-col w-full gap-3">
+            <li 
+              v-for="episode in sortedEpisodes.slice(0, 3)"
+              class="flex justify-between items-center gap-3">
+              <p class="text-xs font-medium text-gray-400 w-3/4 truncate"
+                :title="episode.title"
+              >
+                <span class="text-xs text-gray-400 inline-block w-14 pr-2">
+                  S{{ episode.season_number }}E{{ episode.episode_number }}
+                </span>
+                {{ episode.title }}
+              </p>
+              <span class="text-xs font-medium text-emerald-600 shrink-0">{{ episode.rating.toFixed(1) }}</span>
             </li>
           </ul>
         </InfographicCard>
 
         <InfographicCard title="Lowest Rated Episodes">
-            <ul class="flex flex-col w-full gap-2">
-              <li class="flex justify-between items-center gap-3">
-                <p class="text-xs font-medium text-gray-400"><span class="text-xs text-gray-400 pr-2">S2E1</span>King in the North</p>
-                <span class="text-xs font-medium text-red-400 shrink-0">8.7</span>
-              </li>
-
-              <li class="flex justify-between items-center gap-3">
-                <p class="text-xs font-medium text-gray-400"><span class="text-xs text-gray-400 pr-2">S2E1</span>King in the North</p>
-                <span class="text-xs font-medium text-red-400 shrink-0">8.7</span>
-              </li>
-
-              <li class="flex justify-between items-center gap-3">
-                <p class="text-xs font-medium text-gray-400"><span class="text-xs text-gray-400 pr-2">S2E1</span>King in the North</p>
-                <span class="text-xs font-medium text-red-400 shrink-0">8.7</span>
+            <ul class="flex flex-col w-full gap-3">
+              <li
+                v-for="episode in sortedEpisodes.slice(-3).reverse()"  
+                class="flex justify-between items-center gap-3"
+              >
+                <p class="text-xs font-medium text-gray-400 w-3/4 truncate"
+                  :title="episode.title"
+                >
+                  <span class="text-xs text-gray-400 inline-block w-14 pr-2">
+                    S{{ episode.season_number }}E{{ episode.episode_number }}
+                  </span>
+                  {{ episode.title }}
+                </p>
+                <span class="text-xs font-medium text-red-400 shrink-0">{{episode.rating.toFixed(1)}}</span>
               </li>
             </ul>
         </InfographicCard>
@@ -77,15 +88,21 @@ const placeholderBackdrop = ''
           class="col-span-2 border"
           title="Rating Sparkline"
         >
-        </InfographicCard>
-        
+          <RatingSparkline
+          :ratings="showData.ratings"
+          :show="showData.show"
+          >
+          </RatingSparkline>
+        </InfographicCard>      
       </div>
 
       <RatingHeatmap
           class="flex-1"
-          :ratings="showData.ratings"
+          :ratings="showData.ratings" 
         >
       </RatingHeatmap>
+      
+      
 
     </div>
     

@@ -31,14 +31,17 @@ const showWatchlisted = ref(false)
 
 <template>
 
-  <div class="flex flex-col gap-6 sm:gap-8">
-    
-    
-    <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6 md:gap-8 lg:gap-x-10 lg:gap-y-4 lg:grid-cols-[auto_1fr_auto]">
+  <div class="flex flex-col gap-6 sm:gap-8">  
+    <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6
+      sm:gap-x-8 sm:gap-y-6
+      md:gap-x-10 md:gap-y-8
+      lg:gap-x-12 lg:gap-y-4
+      xl:gap-x-14 xl:gap-y-8
+      lg:grid-cols-[auto_1fr_auto]">
       
       <TvShowCard 
         v-if="show.poster"
-        class="w-32 sm:w-38 md:w-46 lg:w-54 xl:w-62 row-span-2 lg:row-span-3"
+        class="w-32 sm:w-42 md:w-48 lg:w-56 xl:w-64 row-span-2 lg:row-span-3"
         :show="show"
         :hoverable="false"
         :useNuxtLink="false"
@@ -90,7 +93,7 @@ const showWatchlisted = ref(false)
           lg:grid lg:grid-cols-[1fr_1fr]
         ">
           
-          <div class="contents lg:flex lg:flex-col lg:gap-3 xl:gap-4 border">
+          <div class="contents lg:flex lg:flex-col lg:gap-3 xl:gap-4">
             <div v-if="show.rating"
               class="hidden md:flex items-center text-xs xl:text-sm ">
               <h5 class="font-medium w-22 shrink-0 pr-2">Rating:</h5>
@@ -136,7 +139,7 @@ const showWatchlisted = ref(false)
             </div>    
           </div>
           
-          <div class="contents lg:flex lg:flex-col border lg:gap-3 xl:gap-4">
+          <div class="contents lg:flex lg:flex-col lg:gap-3 xl:gap-4">
             <div class="flex items-start text-xs xl:text-sm">
               <h5 class="font-medium w-22 shrink-0 pr-2">Status:</h5>
               <span class="text-gray-400">{{ show.status || 'Unknown' }}</span>
@@ -160,7 +163,7 @@ const showWatchlisted = ref(false)
           </div>
         </div>
 
-        <div class="flex flex-col col-span-2 text-white gap-3 lg:gap-0 border-0 border-red-500 md:col-span-1 lg:row-span-3 lg:row-start-1 lg:col-start-3">
+        <div class="flex flex-col col-span-2 text-white gap-3 lg:gap-0 md:col-span-1 lg:row-span-3 lg:row-start-1 lg:col-start-3">
           <button class="p-3 lg:px-3 lg:py-5 xl:px-4 xl:py-6 flex rounded-lg lg:flex-col lg:rounded-none lg:rounded-t-lg justify-start items-center gap-2 lg:border-b lg:border-b-eigengrau-500 bg-eigengrau-700 hover:bg-eigengrau-600 cursor-pointer">
             <svg v-if="showFavorited"
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 lg:h-6 lg:w-6 xl:h-7 xl:w-7">

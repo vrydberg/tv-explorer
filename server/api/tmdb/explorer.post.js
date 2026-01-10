@@ -5,6 +5,29 @@ const buildQuery = (obj) => {
   return Object.fromEntries(processedQuery);
 }
 
+const generateCacheKey = (processedQuery) => {
+  const defaultFilters = ['page', 'language','sort_by', 'with_genres', 'with_original_language', 'first_air_date.gte', 'first_air_date.lte', 'vote_average.gte', 'with_runtime.gte', 'with_runtime.lte', 'vote_count.gte']
+
+  let chunks = ['tmdb', 'explorer'];
+  
+  for (const filter of defaultFilters) {
+    if (!Object.hasOwn(processedQuery, filter)) continue
+
+    let value = processedQuery[filter]
+
+    // if (typeof value === 'string' && value.includes("|")) {
+    if (filter === 'with_genres') {
+      value = value.split('|').sort().join('_')
+    }
+
+    const redisSafeFilter = filter.replace(/\./g, '_')
+    chunks.push(`${redisSafeFilter}_${value}`) 
+  } 
+
+  const cacheKey = chunks.join("_")
+  return cacheKey
+}
+
 const formatShow = (show) => ({
   id: show.id,
   title: show.name,
@@ -13,7 +36,7 @@ const formatShow = (show) => ({
   poster: show.poster_path,
 })
 
-export default defineEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event) => {
   const { tmdbApiKey } = useRuntimeConfig(event)
   try {
     const body = await readBody(event)
@@ -37,6 +60,29 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
       console.log("Error: ", error)
   }
-  
+},
+{
+  maxAge: 1800,
+  getKey: async (event) => {
+    const body = await readBody(event)
+    const processedQuery = buildQuery(body.filters)
+    const cacheKey = generateCacheKey(processedQuery)
+    console.log(cacheKey)
+    return cacheKey
+  },
+  shouldBypassCache: async (event) => {
+    // No need to build query as page number is always included
+    const body = await readBody(event)
+    const processedQuery = buildQuery(body.filters)
 
-})
+    console.log("body\n", body)
+    console.log("processedQuery", processedQuery)
+
+    const page = parseInt(body.filters.page) || 1
+    
+    if (page > 6) return true
+
+    return false
+  }
+});
+

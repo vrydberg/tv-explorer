@@ -1,4 +1,30 @@
-export default defineEventHandler(async (event) => {
+// export default defineEventHandler(async (event) => {
+  
+//   const { tmdbApiKey } = useRuntimeConfig(event)
+//   try {
+//     const id = getRouterParam(event, 'id')
+
+//     const show = await fetchDetails(tmdbApiKey, id)
+//     const ratings = await fetchRatings(tmdbApiKey, id, show.seasons_total)
+
+//     return {show, ratings}
+
+//   } catch (error) {
+//     console.error("Error (shows[id].get): ", error)
+
+//     if (error.statusCode) {
+//       throw error
+//     }
+
+//     throw createError({
+//       statusCode: 500,
+//       message: 'Something went wrong fetching the TV show data'
+//     })
+    
+//   }
+// })
+
+export default defineCachedEventHandler(async (event) => {
   
   const { tmdbApiKey } = useRuntimeConfig(event)
   try {
@@ -22,7 +48,15 @@ export default defineEventHandler(async (event) => {
     })
     
   }
-})
+},
+{
+  maxAge: 60 * 60 * 24,
+  getKey: (event) => {
+    const id = getRouterParam(event, 'id')
+    return `tmdb_shows_${id}`
+  }
+});
+
 
 
 const fetchDetails = async (tmdbApiKey, id) => {
@@ -104,7 +138,7 @@ const fetchRatings = async (tmdbApiKey, id, seasonsTotal) => {
     return {
       season_id: season.id,
       season_number: season.season_number,
-      name: season.name || 'null',
+      title: season.name || 'null',
       overview: season.overview || null,
       air_date: season.air_date || null,
       poster_path: season.poster_path || null,
@@ -112,7 +146,7 @@ const fetchRatings = async (tmdbApiKey, id, seasonsTotal) => {
         episode_id: ep.id,
         season_number: ep.season_number,
         episode_number: ep.episode_number,
-        name: ep.name || null,
+        title: ep.name || null,
         overview: ep.overview || null,
         air_date: ep.air_date || null,
         runtime: ep.runtime || null,
@@ -123,7 +157,7 @@ const fetchRatings = async (tmdbApiKey, id, seasonsTotal) => {
     }
   })
 
-  console.log(JSON.stringify(formattedRatings, null, 2))
+  // console.log(JSON.stringify(formattedRatings, null, 2))
 
   return formattedRatings
 }

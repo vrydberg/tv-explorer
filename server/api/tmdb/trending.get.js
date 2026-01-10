@@ -15,7 +15,48 @@ const trendingTvShow = async (page, tmdbApiKey) => {
   return tvShowData
 }
 
-export default defineEventHandler(async (event) => {
+// export default defineEventHandler(async (event) => {
+//   const { tmdbApiKey } = useRuntimeConfig(event)
+//   try {
+//     const totalPages = 3
+//     const pages = []
+      
+//     for (let i = 1; i < totalPages + 1; i++) {
+//       pages.push(i)
+//     }
+
+//     const requests = pages.map((page) => trendingTvShow(page, tmdbApiKey))
+
+//     const tvShowDataPages = await Promise.all(requests)
+//     const tvShowData = []
+
+//     tvShowDataPages.forEach(page => {
+//       tvShowData.push(page.results)    
+//     });
+
+//     const processedShows = tvShowData.flat().filter(show => show.vote_count >= 25).sort((a, b) => b.popularity - a.popularity);
+//     const top24 = processedShows.splice(0, 24)
+
+//     const filteredTop24 = top24.map( (show) => ({
+//       id: show.id,
+//       title: show.name,
+//       rating: show.vote_average,
+//       first_date: show.first_air_date, 
+//       poster: show.poster_path,
+//     })) 
+    
+//     console.log(filteredTop24)
+//     return filteredTop24
+// } catch (error) {
+//     console.log("ERror: ", error)
+// }
+  
+
+// })
+
+export default defineCachedEventHandler(async (event) => {
+  console.log('Fetching data from TMDB API…\nCache Miss')
+
   const { tmdbApiKey } = useRuntimeConfig(event)
   try {
     const totalPages = 3
@@ -45,11 +86,15 @@ export default defineEventHandler(async (event) => {
       poster: show.poster_path,
     })) 
     
-    console.log(filteredTop24)
     return filteredTop24
-} catch (error) {
-    console.log("ERror: ", error)
-}
+    
+  } catch (error) {
+    console.log("Error: ", error)
+  }
   
+},
 
-})
+{
+  maxAge: 60 * 60 * 24,
+  getKey: () => 'tmdb_trending_top24'
+});

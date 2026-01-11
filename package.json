@@ -12,6 +12,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
     "@types/node": "^24.10.2",
+    "@upstash/ratelimit": "^2.0.7",
+    "@upstash/redis": "^1.36.1",
     "d3": "^7.9.0",
     "nuxt": "^4.2.1",
     "tailwindcss": "^4.1.17",

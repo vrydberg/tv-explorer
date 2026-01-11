@@ -13,6 +13,7 @@ const dialog = ref(null)
 let dialogMediaQuery
 
 const fetchedShows = ref([])
+const totalPages = ref(null)
 const page = ref(1)
 const selectedSort = ref('popularity.desc')
 const selectedGenres = ref([])
@@ -109,13 +110,30 @@ const applyFilters = async () => {
   initializeIntersectionObserver()
 }
 
+// FIX:
+// const resetFilters = () => {
+//   minRating.value = defaultFilterValues.minRating
+//   minRuntime.value = defaultFilterValues.minRuntime
+//   maxRuntime.value = defaultFilterValues.maxRuntime
+//   selectedSort.value = defaultFilterValues.selectedSort
+//   selectedLanguage.value = defaultFilterValues.selectedLanguage
+//   selectedGenres.value = defaultFilterValues.selectedGenres 
+// }
+
 const fetchShows = async () => {
-  if (isLoading.value) return
+  if (isLoading.value || !canLoadMore.value) return
   
   try {
     isLoading.value = true
 
-    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    if (page.value > 1) {
+      await new Promise(resolve => setTimeout(resolve, 500))
+    }
+
+    // For initial load
+    await new Promise(resolve => setTimeout(resolve, 100))
+    
     const url = `/api/tmdb/explorer`
     const tvShowData = await $fetch(url, {
       method: 'POST',
@@ -124,7 +142,8 @@ const fetchShows = async () => {
       }
     });
 
-    const newShows = tvShowData ?? []
+    const newShows = Array.isArray(tvShowData.shows) ? tvShowData.shows : []
+    totalPages.value = Number(tvShowData.total_pages) || 0
 
     if (page.value === 1) {
       fetchedShows.value = newShows 
@@ -166,21 +185,22 @@ const filtersUnchanged = computed(() => {
   )
 })
 
-const resetFilters = () => {
-  minRating.value = defaultFilterValues.minRating
-  minRuntime.value = defaultFilterValues.minRuntime
-  maxRuntime.value = defaultFilterValues.maxRuntime
-  selectedSort.value = defaultFilterValues.selectedSort
-  selectedLanguage.value = defaultFilterValues.selectedLanguage
-  selectedGenres.value = defaultFilterValues.selectedGenres
-}
+
 
 const MAX_SHOWS = 200
 
-const hasMore = computed(() => {
+const hasMoreShows = computed(() => {
   return fetchedShows.value.length < MAX_SHOWS
 })
 
+const hasMorePages = computed(() => {
+  if (totalPages.value === null) return true
+  return page.value < totalPages.value
+})
+
+const canLoadMore = computed(() => {
+  return hasMoreShows.value && hasMorePages.value
+})
 const isLoading = ref(false)
 
 let observer
@@ -208,7 +228,8 @@ const initializeIntersectionObserver = () => {
   
   observer = new IntersectionObserver( (entries) => {
     const target = entries[0]
-    if (target.isIntersecting && hasMore.value && !isLoading.value) {
+    // if (target.isIntersecting && hasMore.value && !isLoading.value) {
+    if (target.isIntersecting && canLoadMore.value && !isLoading.value) {
       page.value++
     }
     // if (target.isIntersecting && !isLoading.value) {
@@ -246,16 +267,20 @@ onUnmounted(() => {
 <template>
   
 
-  <div class="bg-white px-4 sm:px-6 lg:px-8">
+  <div class="px-4 sm:px-6 lg:px-8">
     <!-- Mobile filter dialog -->
     <div>
       <dialog ref="dialog" id="mobile-filters" class="overflow-hidden backdrop:bg-transparent lg:hidden">
         <div tabindex="0" class="fixed inset-0 flex focus:outline-none">
-          <div class="px-2 relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-white pt-4 pb-6 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full">
+          <!-- <div class="px-2 relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-white pt-4 pb-6 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full"> -->
+          <div class="px-2 relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-eigengrau-900 pt-4 pb-6 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full">
             <div class="flex items-center justify-between px-4">
-              <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+              <!-- <h2 class="text-lg font-medium text-gray-900">Filters</h2> -->
+              <h2 class="text-lg font-medium text-white">Filters</h2>
               <!-- perhaps add a save button here to apply the filter -->
-              <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
+              <!-- <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"> -->
+              <!-- <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"> -->
+              <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md p-2 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
                 <span class="absolute -inset-0.5"></span>
                 <span class="sr-only">Close menu</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
@@ -264,7 +289,7 @@ onUnmounted(() => {
               </button>
             </div>
 
-            <form class="mt-4 border-t border-gray-200">
+            <form class="mt-4 border-t border-eigengrau-700">
               <h3 class="sr-only">Categories</h3>
               <!-- <ul role="list" class="px-2 py-3 font-medium text-gray-900">
                 <li>
@@ -278,16 +303,18 @@ onUnmounted(() => {
                 </li>
               </ul> -->
 
-              <div class="border-t border-gray-200 px-4 py-6">
+              <div class="border-t border-eigengrau-700 px-4 py-6">
                 <h3 class="-mx-2 -my-3 flow-root">
                   <button 
                     type="button"
                     command="--toggle"
                     commandfor="filter-section-mobile-color"
-                    class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
+                    xclass="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
+                    class="flex w-full items-center justify-between px-2 py-3 text-gray-400 hover:text-gray-500"
                     @click="toggleSection('genres')"
                     >
-                    <span class="font-medium text-gray-900">Genres</span>
+                    <!-- <span class="font-medium text-gray-900">Genres</span> -->
+                    <span class="font-medium text-white">Genres</span>
 
                     <span class="ml-6 flex items-center">
                       <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 in-aria-expanded:hidden">
@@ -322,11 +349,13 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <div class="border-t border-gray-200 px-4 py-6">
-                <h2 class="leading-none font-medium text-gray-900">Languages</h2>
+              <div class="border-t border-eigengrau-700 px-4 py-6">
+                <!-- <h2 class="leading-none font-medium text-gray-900">Languages</h2> -->
+                <h2 class="leading-none font-medium text-white">Languages</h2>
                 <select 
                   v-model="selectedLanguage"
-                  class="w-full text-sm border-l-2 mt-4 border-indigo-600 p-1">
+                  xclass="w-full text-sm border-l-2 mt-4 border-indigo-500 p-1"
+                  class="w-full text-sm border-l-2 mt-4 text-gray-400 border-indigo-500 p-1">
                   <option
                     v-for="lang in languages"
                     :key="lang.code"
@@ -338,22 +367,24 @@ onUnmounted(() => {
                   
               </div>
 
-              <div class="border-t border-gray-200 px-4 py-6">
+              <div class="border-t border-eigengrau-700 px-4 py-6">
                 <div class="flex items-center justify-between">
-                  <h2 class="leading-none text-sm font-medium text-gray-900">Rating</h2>
+                  <!-- <h2 class="leading-none text-sm font-medium text-gray-900">Rating</h2> -->
+                  <h2 class="leading-none font-medium text-white">Rating</h2>
                   <div class="flex gap-1">
                     <RatingStar
                       v-for="(star, index) in stars"
                       :key=index
                       :type=star
-                      class="h-3 w-3 text-indigo-600"
+                      class="h-3 w-3 text-indigo-500"
                       >
                     </RatingStar>
                   </div>
                 </div>
                 
                 <div class="flex gap-2 items-center mt-4">
-                  <label class="flex text-xs font-medium gap-1" for="">>= <span>{{ minRating }}</span></label>
+                  <!-- <label class="flex text-xs font-medium gap-1" for="">>= <span>{{ minRating }}</span></label> -->
+                  <label class="flex text-xs text-gray-400 font-medium gap-1" for="">>= <span>{{ minRating }}</span></label>
                   <Slider
                     v-model="minRating"
                     :min="0"
@@ -364,17 +395,16 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <div class="border-t border-gray-200 px-4 py-6">
-                <h2 class="leading-none text-sm font-medium text-gray-900">Runtime</h2>
+              <div class="border-t border-eigengrau-700 px-4 py-6">
+                <!-- <h2 class="leading-none text-sm font-medium text-gray-900">Runtime</h2> -->
+                <h2 class="leading-none font-medium text-white">Runtime</h2>
 
                 <div class="flex flex-col gap-3 mt-4">
                   <div class="flex justify-between">
-                    <label class="text-xs font-medium leading-none">
-                      Min <span>{{ minRuntime }}</span>
-                    </label>
-                    <label class="text-xs font-medium leading-none">
-                      Max <span>{{ maxRuntime }}</span>
-                    </label>
+                    <!-- <label class="text-xs font-medium leading-none">Min <span>{{ minRuntime }}</span></label>
+                    <label class="text-xs font-medium leading-none">Max <span>{{ maxRuntime }}</span></label> -->
+                    <label class="text-xs font-medium text-gray-400 leading-none">Min <span>{{ minRuntime }}</span></label>
+                    <label class="text-xs font-medium text-gray-400 leading-none">Max <span>{{ maxRuntime }}</span></label>
                   </div>
                   <DualSlider
                     v-model:minVal="minRuntime"
@@ -387,17 +417,20 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <div class="border-t border-gray-200 px-4 py-6">
+              <div class="border-t border-eigengrau-700 px-4 py-6">
 
-                <h2 class="leading-none text-sm font-medium text-gray-900">Release Date</h2>
+                <!-- <h2 class="leading-none text-sm font-medium text-gray-900">Release Date</h2> -->
+                <h2 class="leading-none font-medium text-white">Release Date</h2>
                 
                 <div class="flex flex-col gap-2 mt-4">
                 
                   <div class="flex justify-between items-center">
-                    <label class="text-xs" for="release-start">Start:</label>
+                    <!-- <label class="text-xs" for="release-start">Start:</label> -->
+                    <label class="text-xs text-gray-400" for="release-start">Start:</label>
                     <input
                       v-model="minReleaseDate"
-                      class="border text-xs"
+                      xclass="border text-xs"
+                      class="border text-xs text-gray-400 [&::-webkit-calendar-picker-indicator]:invert-[0.5]"
                       type="date"
                       id="start"
                       name="release-start"
@@ -405,10 +438,12 @@ onUnmounted(() => {
                   </div>
 
                   <div class="flex justify-between items-center">
-                    <label class="text-xs" for="release-end">End:</label>
+                    <!-- <label class="text-xs" for="release-end">End:</label> -->
+                    <label class="text-xs text-gray-400" for="release-start">End:</label>
                     <input
                       v-model="maxReleaseDate"
-                      class="border text-xs"
+                      xclass="border text-xs"
+                      class="border text-xs text-gray-400 [&::-webkit-calendar-picker-indicator]:invert-[0.5]"
                       type="date"
                       id="release-end"
                       name="release-end"
@@ -421,12 +456,12 @@ onUnmounted(() => {
 
 
 
-              <div class="border-t border-gray-200 px-4 py-6">
+              <div class="border-t border-eigengrau-700 px-4 py-6">
                 <div class="flex items-center gap-4">
                   <button 
                     :class="[
                       'py-1.5 flex-1 rounded-lg font-medium text-sm text-white',
-                      filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-indigo-600 cursor-pointer' 
+                      filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-indigo-500 cursor-pointer' 
                     ]"
                     type="button"
                     @click="applyFilters"
@@ -434,8 +469,8 @@ onUnmounted(() => {
                     Apply
                   </button>
                     
-                  <button 
-                    class="cursor-pointer text-eigengrau-900 hover:text-indigo-600"
+                  <!-- <button 
+                    class="cursor-pointer text-gray-400 hover:text-indigo-500"
                     type="button"
                     @click="resetFilters"
                   >
@@ -443,7 +478,7 @@ onUnmounted(() => {
                       <path fill-rule="evenodd" d="M13.836 2.477a.75.75 0 0 1 .75.75v3.182a.75.75 0 0 1-.75.75h-3.182a.75.75 0 0 1 0-1.5h1.37l-.84-.841a4.5 4.5 0 0 0-7.08.932.75.75 0 0 1-1.3-.75 6 6 0 0 1 9.44-1.242l.842.84V3.227a.75.75 0 0 1 .75-.75Zm-.911 7.5A.75.75 0 0 1 13.199 11a6 6 0 0 1-9.44 1.241l-.84-.84v1.371a.75.75 0 0 1-1.5 0V9.591a.75.75 0 0 1 .75-.75H5.35a.75.75 0 0 1 0 1.5H3.98l.841.841a4.5 4.5 0 0 0 7.08-.932.75.75 0 0 1 1.025-.273Z" clip-rule="evenodd" />
                     </svg>
 
-                  </button>
+                  </button> -->
                 </div>
 
 
@@ -460,16 +495,20 @@ onUnmounted(() => {
     <main xclass="border-2 border-blue-500 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
           class="mx-auto max-w-7xl">
 
-      <div xclass="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6"
-            class="flex items-baseline justify-between border-b border-gray-200 pt-6 pb-2">
-        <h1 class="text-xl md:text-2xl font-semibold tracking-tight text-eigengrau-900">TV Show Explorer</h1>
+      <!-- <div xclass="flex items-baseline justify-between border-b border-eigengrau-700 pt-24 pb-6"
+            class="flex items-baseline justify-between border-b border-eigengrau-700 pt-6 pb-2"> -->
+      <div xclass="flex items-baseline justify-between border-b border-eigengrau-700 pt-24 pb-6"
+            class="flex items-baseline justify-between md:border-b border-eigengrau-700 pt-6 md:pb-2">
+        <!-- <h1 class="text-xl md:text-2xl font-semibold tracking-tight text-eigengrau-900">TV Show Explorer</h1> -->
+        <h1 class="md:hidden text-lg md:text-xl border-b border-indigo-500 font-semibold tracking-tight text-white">Explorer</h1>
+        <h1 class="hidden md:block"></h1>
 
         <div class="flex items-center">
 
           <div class="relative inline-block text-left">
             <details class="group relative inline-block text-left">
   
-              <summary class="list-none cursor-pointer inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
+              <summary class="list-none cursor-pointer inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-400 hover:hover:text-gray-500">
                 Sort
                 <svg viewBox="0 0 20 20" fill="currentColor" class="-mr-1 ml-1 size-5 shrink-0 text-gray-400 group-hover:text-gray-500 transition-transform group-open:rotate-180">
                   <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
@@ -514,7 +553,7 @@ onUnmounted(() => {
           
           <form class="hidden lg:flex lg:flex-col lg:gap-6">
             
-            <!-- <div class="pb-6 border-b border-gray-200">
+            <!-- <div class="pb-6 border-b border-eigengrau-700">
               <h3 class="sr-only">Categories</h3>
               <ul role="list" class="flex flex-col gap-4 text-sm font-medium text-gray-900">
                 <li>
@@ -533,15 +572,21 @@ onUnmounted(() => {
             </div> -->
             
 
-            <div class="flex flex-col gap-4 pb-6 border-b border-gray-200">
+            <!-- <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700"> -->
+            <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700">
               <div class="">
                 <h3 class="flow-root">
 
-                  <button type="button" 
+                  <!-- <button type="button" 
                     class="flex w-full items-center justify-between bg-white py-0 text-sm text-gray-400 hover:text-gray-500"
                     @click="toggleSection('genres')"
+                  > -->
+                  <button type="button" 
+                    class="flex w-full items-center justify-between py-0 text-sm text-eigengrau-400 hover:text-gray-500"
+                    @click="toggleSection('genres')"
                   >
-                    <span class="font-medium text-gray-900">Genres</span>
+                    <!-- <span class="font-medium text-gray-900">Genres</span> -->
+                    <span class="font-medium text-white">Genres</span>
                     <span class="ml-6 flex items-center">
                       <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 in-aria-expanded:hidden">
                         <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
@@ -577,11 +622,15 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div class="flex flex-col gap-4 pb-6 border-b border-gray-200">    
-              <h2 class="leading-none text-sm font-medium text-gray-900">Languages</h2>
+            <!-- <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700">     -->
+            <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700"> 
+              <!-- <h2 class="leading-none text-sm font-medium text-gray-900">Languages</h2> -->
+              <h2 class="leading-none text-sm font-medium text-white">Languages</h2>
               <select 
                 v-model="selectedLanguage"
-                class="text-xs border-l-2 border-indigo-600 px-2">
+                xclass="text-xs border-l-2 border-indigo-500 px-2"
+                class="text-xs border-l-2 border-indigo-500 text-gray-400 px-2">
+
                 <option
                   v-for="lang in languages"
                   :key="lang.code"
@@ -592,22 +641,25 @@ onUnmounted(() => {
               </select>
             </div>
             
-            <div class="flex flex-col gap-4 pb-6 border-b border-gray-200">    
+            <!-- <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700"> -->
+            <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700">
               <div class="flex items-center justify-between">
-                <h2 class="leading-none text-sm font-medium text-gray-900">Rating</h2>
+                <!-- <h2 class="leading-none text-sm font-medium text-gray-900">Rating</h2> -->
+                <h2 class="leading-none text-sm font-medium text-white">Rating</h2>
                 <div class="flex gap-1">
                   <RatingStar
                     v-for="(star, index) in stars"
                     :key=index
                     :type=star
-                    class="h-3 w-3 text-indigo-600"
+                    class="h-3 w-3 text-indigo-500"
                     >
                   </RatingStar>
                 </div>
               </div>
               
               <div class="flex gap-2 items-center">
-                <label class="flex text-xs font-medium gap-1" for="">>= <span>{{ minRating }}</span></label>
+                <!-- <label class="flex text-xs font-medium gap-1" for="">>= <span>{{ minRating }}</span></label> -->
+                <label class="flex text-xs font-medium gap-1 text-gray-400" for="">>= <span>{{ minRating }}</span></label>
                 <Slider
                   v-model="minRating"
                   :min="0"
@@ -619,15 +671,18 @@ onUnmounted(() => {
               
             </div>
 
-            <div class="flex flex-col gap-4 pb-6 border-b border-gray-200">
-              <h2 class="leading-none text-sm font-medium text-gray-900">Runtime</h2>
+            <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700">
+              <!-- <h2 class="leading-none text-sm font-medium text-gray-900">Runtime</h2> -->
+              <h2 class="leading-none text-sm font-medium text-white">Runtime</h2>
 
               <div class="flex flex-col gap-3">
                 <div class="flex justify-between">
-                  <label class="text-xs font-medium leading-none">
+                  <!-- <label class="text-xs font-medium leading-none"> -->
+                  <label class="text-xs font-medium leading-none text-gray-400">
                     Min <span>{{ minRuntime }}</span>
                   </label>
-                  <label class="text-xs font-medium leading-none">
+                  <!-- <label class="text-xs font-medium leading-none"> -->
+                  <label class="text-xs font-medium leading-none text-gray-400">
                     Max <span>{{ maxRuntime }}</span>
                   </label>
                 </div>
@@ -642,14 +697,17 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div class="flex flex-col gap-4 pb-6 border-b border-gray-200">
-              <h2 class="leading-none text-sm font-medium text-gray-900">Release Date</h2>
+            <div class="flex flex-col gap-4 pb-6 border-b border-eigengrau-700">
+              <!-- <h2 class="leading-none text-sm font-medium text-gray-900">Release Date</h2> -->
+              <h2 class="leading-none text-sm font-medium text-white">Release Date</h2>
               
               <div class="flex justify-between items-center">
-                <label class="text-xs" for="release-start">Start:</label>
+                <!-- <label class="text-xs" for="release-start">Start:</label> -->
+                <label class="text-xs text-gray-400" for="release-start">Start:</label>
                 <input
                   v-model="minReleaseDate"
-                  class="border text-xs"
+                  xclass="border text-xs"
+                  class="border text-xs border-eigengrau-700 text-gray-400 [&::-webkit-calendar-picker-indicator]:invert-[0.5]"
                   type="date"
                   id="start"
                   name="release-start"
@@ -657,10 +715,12 @@ onUnmounted(() => {
               </div>
 
               <div class="flex justify-between items-center">
-                <label class="text-xs" for="release-end">End:</label>
+                <!-- <label class="text-xs" for="release-end">End:</label> -->
+                <label class="text-xs text-gray-400" for="release-end">End:</label>
                 <input
                   v-model="maxReleaseDate"
-                  class="border text-xs"
+                  xclass="border text-xs"
+                  class="border text-xs border-eigengrau-700 text-gray-400 [&::-webkit-calendar-picker-indicator]:invert-[0.5]"
                   type="date"
                   id="release-end"
                   name="release-end"
@@ -668,13 +728,13 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div class="flex flex-col gap-4 pb-6  border-gray-200">
+            <div class="flex flex-col gap-4 pb-6  border-eigengrau-700">
 
               <div class="flex items-center gap-4">
                 <button 
                   :class="[
                     'py-1.5 flex-1 rounded-lg font-medium text-sm text-white',
-                    filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-indigo-600 cursor-pointer' 
+                    filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-indigo-500 cursor-pointer' 
                   ]"
                   type="button"
                   @click="applyFilters"
@@ -682,8 +742,9 @@ onUnmounted(() => {
                   Apply
                 </button>
                   
-                <button 
-                  class="cursor-pointer text-eigengrau-900 hover:text-indigo-600"
+                <!-- <button 
+                  xclass="cursor-pointer text-eigengrau-900 hover:text-indigo-500"
+                  class="cursor-pointer text-gray-400 hover:text-indigo-500"
                   type="button"
                   @click="resetFilters()"
                 >
@@ -691,7 +752,7 @@ onUnmounted(() => {
                     <path fill-rule="evenodd" d="M13.836 2.477a.75.75 0 0 1 .75.75v3.182a.75.75 0 0 1-.75.75h-3.182a.75.75 0 0 1 0-1.5h1.37l-.84-.841a4.5 4.5 0 0 0-7.08.932.75.75 0 0 1-1.3-.75 6 6 0 0 1 9.44-1.242l.842.84V3.227a.75.75 0 0 1 .75-.75Zm-.911 7.5A.75.75 0 0 1 13.199 11a6 6 0 0 1-9.44 1.241l-.84-.84v1.371a.75.75 0 0 1-1.5 0V9.591a.75.75 0 0 1 .75-.75H5.35a.75.75 0 0 1 0 1.5H3.98l.841.841a4.5 4.5 0 0 0 7.08-.932.75.75 0 0 1 1.025-.273Z" clip-rule="evenodd" />
                   </svg>
 
-                </button>
+                </button> -->
               </div>
 
 
@@ -707,7 +768,7 @@ onUnmounted(() => {
               name="fade"
               tag="div" 
               class="w-full grid gap-6 grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-
+              
               <template v-if="isLoading && page === 1">
                 <div v-for="n in 20" :key="'skeleton-key-' + n"> 
                   <SkeletonCard
@@ -724,7 +785,8 @@ onUnmounted(() => {
                 >
                   <TvShowCard
                     :show="s"
-                    :extraInfo="true"
+                    :useNuxtLink="true"
+                    :hoverable="true"
                   />
                 </div>
               </template>
@@ -733,16 +795,17 @@ onUnmounted(() => {
             <div ref="" class=" flex justify-center items-center mt-12">
       
               <div v-if="isLoading && page > 1">
-                <p class="text-eigengrau-700 text-lg px-3 py-2 font-medium flex items-center">
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-eigengrau-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <p class="text-gray-400 text-lg px-3 py-2 font-medium flex items-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                     Loading more...
                 </p>
               </div>
-              <div v-else-if="!hasMore && fetchedShows.length > 0">
-                <p class="text-eigengrau-700 text-lg px-3 py-2 font-medium flex items-center">You've reached the end!</p>
+              <!-- <div v-else-if="!hasMore && fetchedShows.length > 0"> -->
+              <div v-else-if="!canLoadMore && fetchedShows.length > 0">
+                <p class="text-gray-400 text-lg px-3 py-2 font-medium flex items-center">You've reached the end!</p>
               </div>
             </div>
           </div>

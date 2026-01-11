@@ -4,10 +4,10 @@
 <template>
   <footer class="w-full  bg-eigengrau-900 py-4 px-6 sm:px-8 md:px-10 lg:px-12 xl:px-14">
 
-    <div class="w-full mx-auto max-w-6xl flex flex-col gap-2">
+    <div class="w-full mx-auto max-w-7xl flex flex-col gap-2">
         <div class="flex text-sm text-white items-center gap-3">
 
-          <p>Powered by</p>
+          <p>Data provided by</p>
           <a href="https://www.themoviedb.org/">
               <svg class="w-32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 423.04 35.4">
 
@@ -32,7 +32,7 @@
 
         <div class="flex text-sm text-white items-center gap-3">
 
-          <p>Data provided by</p>
+          <p>Powered by</p>
           <a href="https://www.themoviedb.org/">
             <svg class="w-18" xmlns="http://www.w3.org/2000/svg" width="128" height="32" viewBox="0 0 128 32" fill="none">
               <path d="M60.32 32C60.6656 32 60.96 31.7135 60.96 31.36V16.48C60.96 16.48 61.76 17.92 63.2 20.32L69.44 31.04C69.7255 31.6384 70.359 32 70.88 32H75.2V8H70.88C70.5923 8 70.24 8.23906 70.24 8.64V23.68L67.36 18.56L61.6 8.8C61.3197 8.3026 60.7166 8 60.16 8H56V32H60.32Z" fill="white"/>

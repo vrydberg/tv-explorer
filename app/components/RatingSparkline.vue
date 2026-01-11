@@ -79,7 +79,8 @@ const drawSparkline = () => {
     .append('path')
     .datum(sparklineData.value)
     .attr('d', lineGenerator)
-    .attr('stroke', 'oklch(51.1% 0.262 276.966)')
+    // .attr('stroke', 'oklch(51.1% 0.262 276.966)')
+    .attr('stroke', 'oklch(0.585 0.233 277.117)')
     .attr('stroke-width', 3)
     .attr('stroke-linejoin', 'round')
     .attr('fill', 'none')
@@ -91,7 +92,8 @@ const drawSparkline = () => {
     .attr('y1', 0)
     .attr('y2', height)
     .attr('stroke-width', 3)
-    .attr('stroke', 'oklch(51.1% 0.262 276.966)')
+    // .attr('stroke', 'oklch(51.1% 0.262 276.966)')
+    .attr('stroke', 'oklch(0.585 0.233 277.117)')
     .attr('opacity', 0)
 
   const markerDot = svgEl
@@ -99,7 +101,8 @@ const drawSparkline = () => {
     .attr('cx', 0)
     .attr('cy', 0)
     .attr('r', 5)
-    .attr('fill', 'oklch(51.1% 0.262 276.966)')
+    // .attr('fill', 'oklch(51.1% 0.262 276.966)')
+    .attr('fill', 'oklch(0.585 0.233 277.117)')
     .attr('opacity', 0)
 
   const bisect = d3.bisector(xAccessor)
@@ -172,7 +175,7 @@ onUnmounted(() => {
     
     <div class="w-20 flex flex-col justify-end items-end border-white border-0 shrink-0">
       <p sparkline-info class="text-gray-400 text-xs font-medium leading-none mb-1">Avg</p>
-      <h4 sparkline-rating class="text-3xl border-0 p-0 m-0 text-indigo-600 font-bold leading-none">
+      <h4 sparkline-rating class="text-3xl border-0 p-0 m-0 text-indigo-500 font-bold leading-none">
         {{ props.show.rating.toFixed(1)}}
       </h4>
       

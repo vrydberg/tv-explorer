@@ -183,11 +183,11 @@ const setActivePage = (index) => {
           class="w-full max-w-7xl"
           ref="carouselRef"
         >        
-          <Slide class="border-3 border-transparent hover:border-indigo-600 rounded-lg" v-for="s in trendingQuery" :key="s">
+          <Slide class="border-3 border-transparent hover:border-indigo-500 rounded-lg" v-for="s in trendingQuery" :key="s">
             <TvShowCard 
               :show="s"
-              :extraInfo="true"
-              :inCarousel="true"
+              :useNuxtLink="false"
+              :hoverable="true"
               @click="navigateTo(`/shows/${s.id}`)"  
             />
           </Slide>

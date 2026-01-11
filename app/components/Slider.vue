@@ -58,7 +58,8 @@ const cssVars = computed(() => ({
   -webkit-appearance: none;
   appearance: none;
   height: var(--slider-h) ;
-  background: linear-gradient(to right, #4F46E5 var(--fill-percent), #d3d3d3 var(--fill-percent))
+  /* background: linear-gradient(to right, #4F46E5 var(--fill-percent), #d3d3d3 var(--fill-percent)) */
+  background: linear-gradient(to right, #615fff var(--fill-percent), #d3d3d3 var(--fill-percent))
 }
 
 .slider-thumb::-webkit-slider-thumb {
@@ -67,7 +68,8 @@ const cssVars = computed(() => ({
   height: var(--thumb-hw);
   width: var(--thumb-hw);
   cursor: pointer;
-  background-color: oklch(51.1% 0.262 276.966);
+  /* background-color: oklch(51.1% 0.262 276.966); */
+  background-color: oklch(58.5% 0.233 277.117);
   border-radius: 50%;
 }
 
@@ -78,13 +80,16 @@ const cssVars = computed(() => ({
   height: var(--thumb-hw);
   width: var(--thumb-hw);
   cursor: pointer;
-  background-color: oklch(51.1% 0.262 276.966);
+  /* background-color: oklch(51.1% 0.262 276.966); */
+  background-color: oklch(58.5% 0.233 277.117);
   border-radius: 50%;
 }
 
 .slider-thumb:active::-webkit-slider-thumb {
   background-color: #ffffff;
-  border: 2px solid oklch(51.1% 0.262 276.966);
+  /* border: 2px solid oklch(51.1% 0.262 276.966); */
+  border: 2px solid oklch(58.5% 0.233 277.117);
+  
 }
 
 </style>

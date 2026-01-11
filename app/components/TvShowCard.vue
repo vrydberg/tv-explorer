@@ -47,7 +47,7 @@ const stars = computed(() => {
         <img 
           class="w-full h-full object-cover rounded-md shadow-xl/30"
           :class="{
-              'cursor-pointer hover:outline-3 hover:outline-indigo-600': hoverable
+              'cursor-pointer hover:outline-3 hover:outline-indigo-500': hoverable
           }"
           :src="`https://image.tmdb.org/t/p/w500/${show.poster}`"
           :alt="show.title"
@@ -65,7 +65,7 @@ const stars = computed(() => {
               v-for="(star, index) in stars"
               :key=index
               :type=star
-              class="h-3 w-3 text-indigo-600"
+              class="h-3 w-3 text-indigo-500"
             >
             </RatingStar>
           </div>

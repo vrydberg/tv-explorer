@@ -2,10 +2,9 @@
 
 <template>
 
-    <section class="w-full relative z-10">
+    <section v-if="1" class="w-full relative z-10">
             
         <!-- <div class="flex justify-center items-centers aspect-[4/3] bg-[url('https://image.tmdb.org/t/p/original/jvTeRgjFsp66xj8SWxhr7O2J4ud.jpg')] sm:aspect-[16/9] md:aspect-[26/9] lg:aspect-[36/9] bg-center bg-cover"> -->
-
         <div class="flex justify-center items-centers aspect-4/3 bg-[url('https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg')] sm:aspect-16/9 md:aspect-26/9 lg:aspect-36/9 bg-center bg-cover">
             <div class="absolute inset-0 bg-eigengrau-900/40"></div>
             <div
@@ -24,7 +23,7 @@
                     </p>
 
                     <div class="mt-4 flex items-center justify-center gap-3 md:gap-6">
-                        <a href="#" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-lg hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 lg:px-4">Get started</a>
+                        <a href="#" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-medium text-white shadow-lg hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 lg:px-4">Get started</a>
                         <a href="#" class="text-sm text-shadow-lg px-3 py-2 font-medium text-white rounded-md underline underline-offset-3 lg:px-4">Learn more <span aria-hidden="true">→</span></a>
                     </div>
             </div>

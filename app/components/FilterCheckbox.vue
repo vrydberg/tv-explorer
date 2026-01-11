@@ -12,7 +12,7 @@ const selectedVals = defineModel({ type: Array, default: [] })
       <div class="group grid size-4 grid-cols-1">
         <input
           v-model="selectedVals"
-          class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto" 
+          class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-500 checked:bg-indigo-500 indeterminate:border-indigo-500 indeterminate:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto" 
           type="checkbox"
           :value="value"
         />
@@ -22,7 +22,7 @@ const selectedVals = defineModel({ type: Array, default: [] })
         </svg>
       </div>
     </div>
-    <label class="text-sm text-balance truncate text-gray-600">{{ label }}</label>
+    <label class="text-sm lg:text-xs text-balance truncate text-gray-400">{{ label }}</label>
   </div>
 </template>
 

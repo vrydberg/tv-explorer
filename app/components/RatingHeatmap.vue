@@ -127,7 +127,7 @@ const drawHeatmap = () => {
     .attr("ry", 4)
     .attr("width", x.bandwidth() )
     .attr("height", y.bandwidth() )
-    .attr("class", "hover:stroke-indigo-600 hover:opacity-100 stroke-2 stroke-none opacity-80")
+    .attr("class", "hover:stroke-indigo-500 hover:opacity-100 stroke-2 stroke-none opacity-80")
     .style("fill", d => getColor(normalizeRating(d.rating, 0, 10)))
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)
@@ -154,25 +154,12 @@ onMounted(() => {
 <template>
 
   <div class="max-h-[400px] overflow-y-auto p-1 overflow-x-auto border border-eigengrau-700 rounded-md">
-      <svg ref="svg">
-        <!-- heatmap content -->
-      </svg>
+  <!-- <div class="overflow-y-auto p-1 overflow-x-auto border border-eigengrau-700 rounded-md"> -->
+      <svg ref="svg"></svg>
   </div>
   
 </template>
 
-
-<!-- <template>
-  <div>
-    <svg 
-      ref="svg">
-    </svg>
-  </div>
-  
-  
-
-  <div ref="tooltip"></div>
-
-</template> -->
+<!-- Still need to add tooltip -->
 <style></style>
 

@@ -40,7 +40,6 @@ export default defineCachedEventHandler(async (event) => {
   const { tmdbApiKey } = useRuntimeConfig(event)
   try {
     const body = await readBody(event)
-    console.log(body)
     const url = 'https://api.themoviedb.org/3/discover/tv'
     const processedQuery = buildQuery(body.filters)
 
@@ -54,8 +53,11 @@ export default defineCachedEventHandler(async (event) => {
     }
 
     const tvShowData = await $fetch(url, config)
+    const totalPages = tvShowData?.total_pages || 1
+  
     const formattedTvShowData = tvShowData.results.map(show => formatShow(show))
-    return formattedTvShowData
+
+    return { shows: formattedTvShowData, total_pages: totalPages }
 
   } catch (error) {
       console.log("Error: ", error)
@@ -67,17 +69,12 @@ export default defineCachedEventHandler(async (event) => {
     const body = await readBody(event)
     const processedQuery = buildQuery(body.filters)
     const cacheKey = generateCacheKey(processedQuery)
-    console.log(cacheKey)
+    // console.log(cacheKey)
     return cacheKey
   },
   shouldBypassCache: async (event) => {
     // No need to build query as page number is always included
     const body = await readBody(event)
-    const processedQuery = buildQuery(body.filters)
-
-    console.log("body\n", body)
-    console.log("processedQuery", processedQuery)
-
     const page = parseInt(body.filters.page) || 1
     
     if (page > 6) return true

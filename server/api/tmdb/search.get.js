@@ -50,8 +50,6 @@ export default defineEventHandler(async (event) => {
     const processedShows = tvShowData.flat().filter(show => show.vote_count >= 25).sort((a, b) => b.popularity - a.popularity);
     const top10 = processedShows.splice(0, 10)
 
-    // console.log(top10)
-
     const filteredTop10 = top10.map( (show) => ({
         id: show.id,
         title: show.name,
@@ -60,7 +58,6 @@ export default defineEventHandler(async (event) => {
         poster: show.poster_path,
     })) 
     
-    // console.log("TOP 10:)", filteredTop10)
     return filteredTop10
 
   } catch (error) {

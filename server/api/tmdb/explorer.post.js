@@ -69,7 +69,7 @@ export default defineCachedEventHandler(async (event) => {
     const body = await readBody(event)
     const processedQuery = buildQuery(body.filters)
     const cacheKey = generateCacheKey(processedQuery)
-    // console.log(cacheKey)
+
     return cacheKey
   },
   shouldBypassCache: async (event) => {

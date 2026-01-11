@@ -6,7 +6,18 @@ definePageMeta({
 
 const route = useRoute()
 const id = route.params.id
+
+
 const { data: showData, error } = await useFetch(`/api/tmdb/shows/${id}`);
+
+if (error.value) {
+  throw createError({
+    statusCode: error.value.statusCode,
+    statusMessage: error.value.statusMessage,
+    message: error.value.message
+  })
+}
+
 const placeholderBackdrop = ''
 
 
@@ -25,7 +36,7 @@ const sortedEpisodes = computed(() => {
 
 <template>
   <div class="px-4 sm:px-6 lg:px-8">
-    <div class="absolute max-w-8xl w-full inset-0 -z-10 left-1/2 -translate-x-1/2 border-2 border-white">
+    <div class="absolute max-w-8xl w-full inset-0 -z-10 left-1/2 -translate-x-1/2">
       
       <div 
         class="aspect-[3/2] sm:aspect-[16/9] md:aspect-[21/9] w-full bg-center bg-cover"
@@ -38,9 +49,9 @@ const sortedEpisodes = computed(() => {
     </div>
 
     <!-- Need to check xl above devices -->
-    <div class="max-w-7xl w-full mx-auto pt-40 sm:pt-65 md:pt-65 lg:pt-90">
+    <div class="max-w-7xl w-full mx-auto pt-40 sm:pt-65 md:pt-65 lg:pt-85">
 
-      <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-6 md:gap-8">
         
         <TvShowDetail
         :show="showData.show"

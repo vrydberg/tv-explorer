@@ -104,7 +104,6 @@ const stars = computed(() => {
 const applyFilters = async () => {
   fetchedShows.value = []
   page.value = 1
-  console.log("Applying Filters!")
   await fetchShows()
   await nextTick()
   initializeIntersectionObserver()
@@ -218,7 +217,6 @@ const initializeIntersectionObserver = () => {
     return
   }
 
-  console.log(scrollTriggerRef.value)
 
   const options = {
     root: null,

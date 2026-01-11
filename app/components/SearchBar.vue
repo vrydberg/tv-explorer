@@ -6,7 +6,6 @@ const emit = defineEmits(['search-changed'])
 const searchValue = ref('')
 
 const emitSearch = (searchValue) => {
-    console.log("emittin")
     emit('search-changed', searchValue)
 }
 

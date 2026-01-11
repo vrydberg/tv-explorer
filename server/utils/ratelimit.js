@@ -7,7 +7,6 @@ const ratelimit = new Ratelimit({
 });
 
 export async function validateRateLimit(identifier) {
-  console.log("VALIDATING RATE LIMIT")
   const result = await ratelimit.limit(identifier)
   return result // { success, remaining, reset} 
 }

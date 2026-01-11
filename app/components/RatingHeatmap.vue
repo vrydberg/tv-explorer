@@ -14,7 +14,6 @@ const setSeasons = new Set(heatmap.map(d => d.season_number))
 const arraySeasons = [...setSeasons]
 const maxSeasons = arraySeasons.length
 
-console.log(maxSeasons)
 
 const setEpisodes = new Set(heatmap.map(d => d.episode_number))
 const arrayEpisodes = [...setEpisodes]

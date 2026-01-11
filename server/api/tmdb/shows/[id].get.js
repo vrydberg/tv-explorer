@@ -120,7 +120,6 @@ const fetchRatings = async (tmdbApiKey, id, seasonsTotal) => {
 
   const results = await Promise.allSettled(seasonRequests)
 
-  // console.log(JSON.stringify(results, null, 2))
   const ratings = results
     .filter(r => 
       r.status === 'fulfilled' && 
@@ -156,8 +155,6 @@ const fetchRatings = async (tmdbApiKey, id, seasonsTotal) => {
       }))
     }
   })
-
-  // console.log(JSON.stringify(formattedRatings, null, 2))
 
   return formattedRatings
 }

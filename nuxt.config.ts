@@ -11,8 +11,11 @@ export default defineNuxtConfig({
     ]
   },
   runtimeConfig: {
-    tmdbApiKey: process.env.TMDB_API_KEY
+    tmdbApiKey: '',
+    // upstashRedisRestUrl: '',
+    // upstashRedisRestToken: ''
   },
+
   nitro: {
     storage: {
       cache: {

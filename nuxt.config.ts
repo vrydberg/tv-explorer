@@ -12,6 +12,24 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     tmdbApiKey: process.env.TMDB_API_KEY
+  },
+  nitro: {
+    storage: {
+      cache: {
+        driver: 'upstash',
+        url: process.env.UPSTASH_REDIS_REST_URL,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+        ttl: 3600
+      }
+    },
+    devStorage: {
+      cache: {
+        driver: 'upstash',
+        url: process.env.UPSTASH_REDIS_REST_URL,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+        ttl: 3600
+      }
+    }
   }
 })
 

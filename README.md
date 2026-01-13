@@ -1,31 +1,15 @@
+<div align="center">
+
 # TV Explorer
 
-This application is a full-stack TV discovery and tracking platform built in Nuxt, providing features including: advanced search/filtering, detailed show pages, personalized favorites and watchlists, and interactive data visualizations of show rating metrics.
+A full-stack TV discovery platform with advanced filtering, interactive D3.js visualizations, and server-side caching.
 
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#tv-explorer">TV Explorer</a></li>
-    <li><a href="#live-demo">Live Demo</a></li>
-    <li><a href="#screenshots">Screenshots</a></li>
-    <li><a href="#about-the-project">About the Project</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#built-with">Built With</a></li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#author">Author</a></li>
-  </ol>
-</details>
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://tv-explorer.vercel.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## Live Demo
+**[View Live Demo](https://tv-explorer.vercel.app)**
 
-https://tv-explorer.vercel.app
+</div>
 
 ## Screenshots
 
@@ -39,118 +23,107 @@ https://tv-explorer.vercel.app
   <img src="./public/screenshots/show-metrics.png" alt="Show Metrics" width="49%" />
 </div>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Features
 
-## About The Project
+- **Advanced Search & Filtering** — Multi-parameter filtering by genre, language, release date, ratings, and runtime
+- **Interactive Data Visualizations** — D3.js-powered rating heatmaps and sparkline charts for episode-level insights
+- **Server-Side API Proxy** — Secure TMDB API integration with protected credentials
+- **Redis Caching Layer** — Upstash Redis with intelligent cache key generation and TTL management
+- **Rate Limiting** — Sliding window rate limiting (10 req/10s) to prevent API abuse
 
-This project originated from a personal passion for television and a desire to gain in-depth insights into TV shows and discover my next bingewatch. I found that existing platforms tend to focus on movies, and that there are a lack of platforms specifically dedicated to television - this project felt suitable to address both my personal needs and that market gap. In addition to solving that, this project enabled me to expand my tech stack by learning new frameworks in Vue.js and Nuxt.js.
+## Tech Stack
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+| Category | Technology |
+|----------|------------|
+| Framework | Nuxt 4 (Vue 3, Nitro) |
+| Styling | Tailwind CSS 4 |
+| Data Visualization | D3.js v7 |
+| Caching | Upstash Redis |
+| Rate Limiting | @upstash/ratelimit |
+| External API | TMDB API v3 |
+| Deployment | Vercel |
 
-### Built With
+## Architecture Highlights
 
-* [![Nuxt][Nuxt.js]][Nuxt-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Tailwind][TailwindCSS]][TailwindCSS-url]
-* [![Redis][Redis]][Redis-url]
-* [![MongoDB][MongoDB]][MongoDB-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Installation
-
-- Install dependencies:
-
-```bash
-npm install
-
-pnpm install
-
-yarn install
-
-bun install
+```
+├── app/
+│   ├── pages/           # File-based routing (landing, explorer, show details)
+│   ├── components/      # Vue components (auto-imported)
+│   └── utils/           # Client-side utilities
+├── server/
+│   ├── api/tmdb/        # Proxy endpoints with caching
+│   ├── middleware/      # Rate limiting, cache timing
+│   └── utils/           # Server utilities
 ```
 
-## Development Server
+**Key Implementation Decisions:**
 
-- Start the development server on `http://localhost:3000`:
-
-```bash
-
-npm run dev
-
-pnpm dev
-
-yarn dev
-
-bun run dev
-```
+- **Server-side data fetching** — All TMDB API calls route through Nitro server endpoints to protect API keys and enable caching
+- **Two-layer caching** — `defineCachedEventHandler` with Upstash Redis storage; 30-min TTL for search, 24-hr TTL for show details
+- **Smart cache key generation** — Deterministic keys from sorted/sanitized filter parameters for complex queries
+- **Parallel data fetching** — `Promise.allSettled` for fetching all season data concurrently
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+- Node.js >= 18
+- [TMDB API Key](https://www.themoviedb.org/documentation/api)
+- [Upstash Redis](https://upstash.com/) account
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/vrydberg/tv-explorer.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin vrydberg/tv-explorer
-   git remote -v # confirm the changes
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/username/tv-explorer.git
+cd tv-explorer
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+# Install dependencies
+npm install
 
+# Configure environment variables
+cp .env.example .env
+```
 
+Add your credentials to `.env`:
 
+```
+NUXT_TMDB_API_KEY=your_tmdb_bearer_token
+UPSTASH_REDIS_REST_URL=your_upstash_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_token
+```
+
+### Development
+
+```bash
+npm run dev        # Start dev server at http://localhost:3000
+npm run build      # Production build
+npm run preview    # Preview production build
+```
 
 ## License
 
-MIT License
+This project is licensed under the MIT License.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
-## Contact
+<div align="center">
 
-Project Link: [https://github.com/vrydberg/tv-explorer](https://github.com/vrydberg/tv-explorer)
+[![Nuxt][Nuxt.js]][Nuxt-url]
+[![Vue][Vue.js]][Vue-url]
+[![Tailwind][TailwindCSS]][TailwindCSS-url]
+[![Redis][Redis]][Redis-url]
+[![Vercel][Vercel]][Vercel-url]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</div>
 
 [Nuxt.js]: https://img.shields.io/badge/Nuxt-002E3B?logo=nuxt&logoColor=#00DC82
 [Nuxt-url]: https://nuxt.com/
-
 [Vue.js]: https://img.shields.io/badge/Vue.js-4FC08D?logo=vuedotjs&logoColor=fff
 [Vue-url]: https://vuejs.org/
-
-[Vercel]:https://img.shields.io/badge/Vercel-%23000000.svg?logo=vercel&logoColor=white
-[Vercel-url]:https://vercel.com/
-
-[Redis]:https://img.shields.io/badge/Redis-%23DD0031.svg?logo=redis&logoColor=white
-[Redis-url]:https://redis.io/
-
-[TailwindCSS]:https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white
-[TailwindCSS-url]:https://tailwindcss.com/
-
-[MongoDB]:https://img.shields.io/badge/MongoDB-%234ea94b.svg?logo=mongodb&logoColor=white
-[MongoDB-url]:https://www.mongodb.com/
+[TailwindCSS]: https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white
+[TailwindCSS-url]: https://tailwindcss.com/
+[Redis]: https://img.shields.io/badge/Redis-%23DD0031.svg?logo=redis&logoColor=white
+[Redis-url]: https://redis.io/
+[Vercel]: https://img.shields.io/badge/Vercel-%23000000.svg?logo=vercel&logoColor=white
+[Vercel-url]: https://vercel.com/

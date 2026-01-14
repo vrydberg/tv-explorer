@@ -55,7 +55,7 @@ const toggleNav = () => {
               to="/"
               :class="[
                   'block py-2 px-3 md:bg-transparent md:p-0',
-                  $route.path === '/' ? 'bg-indigo-500 md:text-indigo-500 border-b border-b-indigo-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-indigo-500'
+                  $route.path === '/' ? 'bg-accent-500 md:text-accent-500 border-b border-b-accent-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-accent-500'
               ]"
               aria-current="page"
               @click="toggleNav"
@@ -67,7 +67,7 @@ const toggleNav = () => {
               to="/explorer"
               :class="[
                   'block py-2 px-3  md:bg-transparent md:p-0',
-                  $route.path === '/explorer' ? 'bg-indigo-500 md:text-indigo-500 border-b border-b-indigo-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-indigo-500'
+                  $route.path === '/explorer' ? 'bg-accent-500 md:text-accent-500 border-b border-b-accent-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-accent-500'
               ]"
               aria-current="page"
               @click="toggleNav"
@@ -79,7 +79,7 @@ const toggleNav = () => {
               to="/favorites"
               :class="[
                   'block py-2 px-3 rounded-sm md:bg-transparent md:p-0',
-                  $route.path === '/favorites' ? 'bg-indigo-500 md:text-indigo-500 border-b border-b-indigo-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-indigo-500'
+                  $route.path === '/favorites' ? 'bg-accent-500 md:text-accent-500 border-b border-b-accent-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-accent-500'
               ]"
               aria-current="page">Favorites
             </NuxtLink>
@@ -89,7 +89,7 @@ const toggleNav = () => {
               to="/about"
               :class="[
                   'block py-2 px-3 rounded-sm md:bg-transparent md:p-0',
-                  $route.path === '/about' ? 'bg-indigo-500 md:text-indigo-500 border-b border-b-indigo-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-indigo-500'
+                  $route.path === '/about' ? 'bg-accent-500 md:text-accent-500 border-b border-b-accent-500' : 'text-white hover:bg-eigengrau-700 md:hover:bg-transparent md:hover:text-accent-500'
               ]"
               aria-current="page">About
             </NuxtLink>

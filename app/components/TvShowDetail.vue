@@ -66,7 +66,7 @@ const showWatchlisted = ref(false)
                   v-for="(star, index) in stars"
                   :key=index
                   :type=star
-                  class="h-2 w-2 sm:h-3 sm:w-3 text-indigo-500"
+                  class="h-2 w-2 sm:h-3 sm:w-3 text-accent-500"
                   >
                 </RatingStar>
               </div>
@@ -103,7 +103,7 @@ const showWatchlisted = ref(false)
                     v-for="(star, index) in stars"
                     :key=index
                     :type=star
-                    class="h-3 w-3 xl:h-4 xl:w-4 text-indigo-500"
+                    class="h-3 w-3 xl:h-4 xl:w-4 text-accent-500"
                     >
                   </RatingStar>
                 </div>

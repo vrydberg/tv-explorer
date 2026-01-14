@@ -12,7 +12,7 @@ const selectedVals = defineModel({ type: Array, default: [] })
       <div class="group grid size-4 grid-cols-1">
         <input
           v-model="selectedVals"
-          class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-500 checked:bg-indigo-500 indeterminate:border-indigo-500 indeterminate:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto" 
+          class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-accent-500 checked:bg-accent-500 indeterminate:border-accent-500 indeterminate:bg-accent-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto" 
           type="checkbox"
           :value="value"
         />

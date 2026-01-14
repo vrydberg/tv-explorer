@@ -1,41 +1,20 @@
+/* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import "tailwindcss";
 
-/* You define a @theme that can be applied to utility classes */
-/* You can define base styling and utilized the specialized CSS theme variables as well */
-/* For now, I am just going to stick with this */
-
+/*
+ * Design Tokens
+ *
+ * All tokens defined here generate Tailwind utility classes.
+ * Usage: bg-eigengrau-800, text-accent-500, text-text-muted, etc.
+ */
 @theme {
-    --max-width-8xl: 88rem;
     --font-roboto: "Roboto", sans-serif;
-    --color-steel-100: #f8f9fa;
-    --color-steel-200: #e9ecef;
-    --color-steel-300: #dee2e6;
-    --color-steel-400: #ced4da;
-    --color-steel-500: #adb5bd;
-    --color-steel-600: #6c757d;
-    --color-steel-700: #495057;
-    --color-steel-800: #343a40;
-    --color-steel-900: #212529;
-    --color-steel-1000: #0a0a0b;
+    --max-width-8xl: 88rem;
 
-    
-    --color-violet-900: #10002B;
-    --color-violet-800: #240046;
-    --color-violet-700: #3C096C;
-    --color-violet-600: #5A189A;
-    --color-violet-500: #7B2CBF;
-    --color-violet-400: #9D4EDD;
-    --color-violet-300: #C77DFF;
-    --color-violet-200: #E0AAFF;
-
-    --color-sky: #7AD7EE;
-    --color-lime: #B9EB7D;
-    --color-banana: #FFE077;
-
-    
-    /* Eigengrau */
+    /* Eigengrau - dark neutral scale for backgrounds/borders */
     --color-eigengrau-900: #14181c;
     --color-eigengrau-850: #1e2226;
     --color-eigengrau-800: #272b2f;
@@ -48,22 +27,72 @@
     --color-eigengrau-100: #cacbcc;
     --color-eigengrau-50:  #e4e5e5;
 
+    /* Accent - primary brand color (buttons, links, focus states) */
+    --color-accent-600: #4f46e5;
+    --color-accent-500: #6366f1;
+    --color-accent-400: #818cf8;
+    --color-accent-300: #a5b4fc;
+
     --color-gray-400: #9ca3af;
+
+    /* Semantic aliases - use these for consistent theming */
+    --color-background: var(--color-eigengrau-900);
+    --color-surface: var(--color-eigengrau-850);
+    --color-surface-elevated: var(--color-eigengrau-800);
+    --color-surface-hover: var(--color-eigengrau-700);
+
+    --color-border: var(--color-eigengrau-700);
+    --color-border-subtle: var(--color-eigengrau-800);
+
+    --color-text-primary: #ffffff;
+    --color-text-secondary: var(--color-eigengrau-100);
+    --color-text-muted: var(--color-eigengrau-300);
+
+    /* Component tokens - sliders (Slider.vue, DualSlider.vue) */
+    --color-slider-track: var(--color-eigengrau-300);
+    --color-slider-fill: var(--color-accent-500);
+    --color-slider-thumb: var(--color-accent-500);
+    --color-slider-thumb-active: #ffffff;
+
+    /* Component tokens - D3 charts (RatingSparkline.vue, RatingHeatmap.vue) */
+    --color-sparkline-stroke: var(--color-accent-500);
+    --color-sparkline-fill: oklch(78.5% 0.115 274.713 / 0.25);
+    --color-sparkline-marker: var(--color-accent-500);
+    --color-heatmap-empty: var(--color-eigengrau-500);
 }
 
 @layer base {
     html {
-        font-family: "Roboto", sans-serif;
-        letter-spacing: 0.025em; 
+        font-family: var(--font-roboto);
+        letter-spacing: 0.025em;
     }
 
     body {
-        background-color: #14181c;
+        background-color: var(--color-background);
         margin: 0;
         padding: 0;
     }
 
     svg text {
         font-family: var(--font-roboto);
+    }
+
+    /*
+     * CSS custom properties for raw CSS/JS that can't use Tailwind classes.
+     * Sliders use these in scoped <style>, D3 reads via getComputedStyle().
+     */
+    :root {
+        --slider-track: var(--color-slider-track);
+        --slider-fill: var(--color-slider-fill);
+        --slider-thumb: var(--color-slider-thumb);
+        --slider-thumb-active: var(--color-slider-thumb-active);
+
+        --sparkline-stroke: var(--color-sparkline-stroke);
+        --sparkline-fill: var(--color-sparkline-fill);
+        --sparkline-marker: var(--color-sparkline-marker);
+
+        --heatmap-empty: var(--color-heatmap-empty);
+
+        --accent-500: var(--color-accent-500);
     }
 }

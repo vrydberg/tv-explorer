@@ -276,9 +276,9 @@ onUnmounted(() => {
               <!-- <h2 class="text-lg font-medium text-gray-900">Filters</h2> -->
               <h2 class="text-lg font-medium text-white">Filters</h2>
               <!-- perhaps add a save button here to apply the filter -->
-              <!-- <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"> -->
-              <!-- <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"> -->
-              <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md p-2 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
+              <!-- <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-accent-500 focus:outline-hidden"> -->
+              <!-- <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-accent-500 focus:outline-hidden"> -->
+              <button type="button" command="close" commandfor="mobile-filters" class="relative -mr-2 flex size-10 items-center justify-center rounded-md p-2 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-accent-500 focus:outline-hidden">
                 <span class="absolute -inset-0.5"></span>
                 <span class="sr-only">Close menu</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
@@ -352,8 +352,8 @@ onUnmounted(() => {
                 <h2 class="leading-none font-medium text-white">Languages</h2>
                 <select 
                   v-model="selectedLanguage"
-                  xclass="w-full text-sm border-l-2 mt-4 border-indigo-500 p-1"
-                  class="w-full text-sm border-l-2 mt-4 text-gray-400 border-indigo-500 p-1">
+                  xclass="w-full text-sm border-l-2 mt-4 border-accent-500 p-1"
+                  class="w-full text-sm border-l-2 mt-4 text-gray-400 border-accent-500 p-1">
                   <option
                     v-for="lang in languages"
                     :key="lang.code"
@@ -374,7 +374,7 @@ onUnmounted(() => {
                       v-for="(star, index) in stars"
                       :key=index
                       :type=star
-                      class="h-3 w-3 text-indigo-500"
+                      class="h-3 w-3 text-accent-500"
                       >
                     </RatingStar>
                   </div>
@@ -459,7 +459,7 @@ onUnmounted(() => {
                   <button 
                     :class="[
                       'py-1.5 flex-1 rounded-lg font-medium text-sm text-white',
-                      filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-indigo-500 cursor-pointer' 
+                      filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-accent-500 cursor-pointer' 
                     ]"
                     type="button"
                     @click="applyFilters"
@@ -468,7 +468,7 @@ onUnmounted(() => {
                   </button>
                     
                   <!-- <button 
-                    class="cursor-pointer text-gray-400 hover:text-indigo-500"
+                    class="cursor-pointer text-gray-400 hover:text-accent-500"
                     type="button"
                     @click="resetFilters"
                   >
@@ -498,7 +498,7 @@ onUnmounted(() => {
       <div xclass="flex items-baseline justify-between border-b border-eigengrau-700 pt-24 pb-6"
             class="flex items-baseline justify-between md:border-b border-eigengrau-700 pt-6 md:pb-2">
         <!-- <h1 class="text-xl md:text-2xl font-semibold tracking-tight text-eigengrau-900">TV Show Explorer</h1> -->
-        <h1 class="md:hidden text-lg md:text-xl border-b border-indigo-500 font-semibold tracking-tight text-white">Explorer</h1>
+        <h1 class="md:hidden text-lg md:text-xl border-b border-accent-500 font-semibold tracking-tight text-white">Explorer</h1>
         <h1 class="hidden md:block"></h1>
 
         <div class="flex items-center">
@@ -626,8 +626,8 @@ onUnmounted(() => {
               <h2 class="leading-none text-sm font-medium text-white">Languages</h2>
               <select 
                 v-model="selectedLanguage"
-                xclass="text-xs border-l-2 border-indigo-500 px-2"
-                class="text-xs border-l-2 border-indigo-500 text-gray-400 px-2">
+                xclass="text-xs border-l-2 border-accent-500 px-2"
+                class="text-xs border-l-2 border-accent-500 text-gray-400 px-2">
 
                 <option
                   v-for="lang in languages"
@@ -649,7 +649,7 @@ onUnmounted(() => {
                     v-for="(star, index) in stars"
                     :key=index
                     :type=star
-                    class="h-3 w-3 text-indigo-500"
+                    class="h-3 w-3 text-accent-500"
                     >
                   </RatingStar>
                 </div>
@@ -732,7 +732,7 @@ onUnmounted(() => {
                 <button 
                   :class="[
                     'py-1.5 flex-1 rounded-lg font-medium text-sm text-white',
-                    filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-indigo-500 cursor-pointer' 
+                    filtersUnchanged ? 'bg-eigengrau-200 cursor-not-allowed' : 'bg-accent-500 cursor-pointer' 
                   ]"
                   type="button"
                   @click="applyFilters"
@@ -741,8 +741,8 @@ onUnmounted(() => {
                 </button>
                   
                 <!-- <button 
-                  xclass="cursor-pointer text-eigengrau-900 hover:text-indigo-500"
-                  class="cursor-pointer text-gray-400 hover:text-indigo-500"
+                  xclass="cursor-pointer text-eigengrau-900 hover:text-accent-500"
+                  class="cursor-pointer text-gray-400 hover:text-accent-500"
                   type="button"
                   @click="resetFilters()"
                 >

@@ -40,6 +40,10 @@ const marginLeft = 40;
 
 const drawHeatmap = () => {
 
+  // Read theme colors from CSS custom properties
+  const styles = getComputedStyle(document.documentElement)
+  const emptyColor = styles.getPropertyValue('--heatmap-empty').trim()
+
   const svgEl = d3.select(svg.value)
   const tooltipEl = d3.select(tooltip.value)
   svgEl.selectAll('*').remove()
@@ -74,7 +78,7 @@ const drawHeatmap = () => {
   const colorScale = d3.scaleSequential(d3.interpolateRdYlGn)
 
   const getColor = (rating) => {
-    if (rating == 0) return "grey"
+    if (rating == 0) return emptyColor
     return colorScale(rating)
   }
   
@@ -126,7 +130,7 @@ const drawHeatmap = () => {
     .attr("ry", 4)
     .attr("width", x.bandwidth() )
     .attr("height", y.bandwidth() )
-    .attr("class", "hover:stroke-indigo-500 hover:opacity-100 stroke-2 stroke-none opacity-80")
+    .attr("class", "hover:stroke-accent-500 hover:opacity-100 stroke-2 stroke-none opacity-80")
     .style("fill", d => getColor(normalizeRating(d.rating, 0, 10)))
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)

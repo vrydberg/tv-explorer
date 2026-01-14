@@ -36,8 +36,14 @@ const drawSparkline = () => {
 
   if (!svg.value) return;
 
-  const { width, height } = svg.value.getBoundingClientRect();  
+  const { width, height } = svg.value.getBoundingClientRect();
   const marginTop = 20
+
+  // Read theme colors from CSS custom properties
+  const styles = getComputedStyle(document.documentElement)
+  const strokeColor = styles.getPropertyValue('--sparkline-stroke').trim()
+  const fillColor = styles.getPropertyValue('--sparkline-fill').trim()
+  const markerColor = styles.getPropertyValue('--sparkline-marker').trim()
 
   const svgEl = d3.select(svg.value)
   svgEl.selectAll('*').remove()
@@ -67,8 +73,7 @@ const drawSparkline = () => {
     .append('path')
     .datum(sparklineData.value)
     .attr('d', areaGenerator)
-    // .attr('fill', 'oklch(78.5% 0.115 274.713)')
-    .attr('fill', 'oklch(78.5% 0.115 274.713 / 0.25)')
+    .attr('fill', fillColor)
   
   const lineGenerator = d3.line()
     .x( (d) => xScale(xAccessor(d)))
@@ -79,8 +84,7 @@ const drawSparkline = () => {
     .append('path')
     .datum(sparklineData.value)
     .attr('d', lineGenerator)
-    // .attr('stroke', 'oklch(51.1% 0.262 276.966)')
-    .attr('stroke', 'oklch(0.585 0.233 277.117)')
+    .attr('stroke', strokeColor)
     .attr('stroke-width', 3)
     .attr('stroke-linejoin', 'round')
     .attr('fill', 'none')
@@ -92,8 +96,7 @@ const drawSparkline = () => {
     .attr('y1', 0)
     .attr('y2', height)
     .attr('stroke-width', 3)
-    // .attr('stroke', 'oklch(51.1% 0.262 276.966)')
-    .attr('stroke', 'oklch(0.585 0.233 277.117)')
+    .attr('stroke', markerColor)
     .attr('opacity', 0)
 
   const markerDot = svgEl
@@ -101,8 +104,7 @@ const drawSparkline = () => {
     .attr('cx', 0)
     .attr('cy', 0)
     .attr('r', 5)
-    // .attr('fill', 'oklch(51.1% 0.262 276.966)')
-    .attr('fill', 'oklch(0.585 0.233 277.117)')
+    .attr('fill', markerColor)
     .attr('opacity', 0)
 
   const bisect = d3.bisector(xAccessor)
@@ -169,13 +171,13 @@ onUnmounted(() => {
 </script>
 
 <template>  
-  <div class="w-full h-full flex items-end gap-3 border-b-0 border-b-indigo-300/25">
+  <div class="w-full h-full flex items-end gap-3 border-b-0 border-b-accent-300/25">
     
     <svg class="h-full flex-1 min-w-0" ref="svg"></svg>
     
     <div class="w-20 flex flex-col justify-end items-end border-white border-0 shrink-0">
       <p sparkline-info class="text-gray-400 text-xs font-medium leading-none mb-1">Avg</p>
-      <h4 sparkline-rating class="text-3xl border-0 p-0 m-0 text-indigo-500 font-bold leading-none">
+      <h4 sparkline-rating class="text-3xl border-0 p-0 m-0 text-accent-500 font-bold leading-none">
         {{ props.show.rating.toFixed(1)}}
       </h4>
       

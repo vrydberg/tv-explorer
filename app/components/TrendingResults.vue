@@ -124,7 +124,7 @@ const setActivePage = (index) => {
 
       <div class="hidden lg:flex justify-center items-center gap-4">
         <button
-          class="flex items-center justify-center bg-steel-700 text-white rounded-3xl cursor-pointer p-1 hover:bg-eigengrau-500"
+          class="flex items-center justify-center bg-eigengrau-700 text-white rounded-3xl cursor-pointer p-1 hover:bg-eigengrau-500"
           @click="prev()"
           >
             <svg
@@ -183,7 +183,7 @@ const setActivePage = (index) => {
           class="w-full max-w-7xl"
           ref="carouselRef"
         >        
-          <Slide class="border-3 border-transparent hover:border-indigo-500 rounded-lg" v-for="s in trendingQuery" :key="s">
+          <Slide class="border-3 border-transparent hover:border-accent-500 rounded-lg" v-for="s in trendingQuery" :key="s">
             <TvShowCard 
               :show="s"
               :useNuxtLink="false"

@@ -53,7 +53,7 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
       <!-- Desktop Layout -->
       <div class="hidden md:flex items-center justify-between">
         <!-- Logo (Left) -->
-        <NuxtLink to="/" class="flex items-center gap-2.5 flex-shrink-0 group">
+        <NuxtLink to="/" class="flex items-center gap-2.5 shrink-0 group">
           <img :src="tvIcon" alt="TV Explorer App" class="h-5 w-auto opacity-90 group-hover:opacity-100 transition-opacity"/>
           <span class="text-base font-semibold tracking-tight text-text-primary">Banana Stand</span>
         </NuxtLink>
@@ -70,8 +70,10 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
               >
                 Home
                 <span
-                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500 transition-transform duration-200 origin-left"
-                  :class="$route.path === '/' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
+                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500"
+                  :class="$route.path === '/'
+                    ? 'block'
+                    : 'hidden group-hover:block'"
                 ></span>
               </NuxtLink>
             </li>
@@ -83,24 +85,30 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
               >
                 Explorer
                 <span
-                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500 transition-transform duration-200 origin-left"
-                  :class="$route.path === '/explorer' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
+                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500"
+                  :class="$route.path === '/explorer'
+                    ? 'block'
+                    : 'hidden group-hover:block'"
                 ></span>
               </NuxtLink>
             </li>
-            <li>
+            <!-- <li>
               <NuxtLink
                 to="/about"
-                class="relative py-1.5 transition-colors duration-200 group"
-                :class="$route.path === '/about' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
+                class="relative py-1.5 group"
+                :class="$route.path === '/about'
+                  ? 'text-text-primary'
+                  : 'text-text-muted hover:text-text-primary'"
               >
                 About
                 <span
-                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500 transition-transform duration-200 origin-left"
-                  :class="$route.path === '/about' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
+                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500"
+                  :class="$route.path === '/about'
+                    ? 'block'
+                    : 'hidden group-hover:block'"
                 ></span>
               </NuxtLink>
-            </li>
+            </li> -->
           </ul>
 
           <!-- Always-Visible Search Bar -->
@@ -123,10 +131,10 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
           </form>
         </div>
 
-        <!-- Login Button (Right) -->
+        <!-- Once implemented login page change -->
         <NuxtLink
-          to="/login"
-          class="flex-shrink-0 px-3.5 py-1 text-[13px] font-medium tracking-wide bg-accent-500 hover:bg-accent-400 text-white rounded transition-colors duration-200"
+          to="/"
+          class="shrink-0 px-3.5 py-1 text-[13px] font-medium tracking-wide bg-accent-500 hover:bg-accent-400 text-white rounded transition-colors duration-200"
         >
           Login
         </NuxtLink>
@@ -200,7 +208,7 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
       <!-- Mobile Navigation Menu -->
       <div
         v-show="isOpen"
-        class="mt-3 md:hidden"
+        class="absolute left-0 right-0 top-full bg-eigengrau-900 px-4 sm:px-6 pb-3 md:hidden shadow-lg"
       >
         <ul class="flex flex-col gap-1 py-2">
           <li>

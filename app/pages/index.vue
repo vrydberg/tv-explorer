@@ -16,10 +16,12 @@ const trendingTvShows = ref(trendingData.value)
 <template>
   <div class="flex flex-col">
     <Hero />
+
+    <!-- Trending flows from hero gradient -->
     <TrendingResults
-      class="mt-6 mb-6"
+      class="py-2 sm:py-4"
       :trendingQuery="trendingTvShows"
-    </TrendingResults>
+    />
   </div>
 </template>
 

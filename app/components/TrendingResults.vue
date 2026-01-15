@@ -118,80 +118,68 @@ const setActivePage = (index) => {
 </script>
 
 <template>
-  <div class="w-full flex justify-between items-center flex-col px-6 gap-4">
-    <div class="w-full max-w-7xl flex items-start justify-between ">
-      <h3 class="text-md leading-none mt-0 mb-0 pt-0 pb-0 flex font-medium text-white lg:text-md">Trending</h3>
+  <div class="w-full flex justify-between items-center flex-col px-6 gap-3">
 
-      <div class="hidden lg:flex justify-center items-center gap-4">
+    
+    <div class="w-full max-w-7xl flex items-center justify-between">
+
+
+      <div class="flex items-center gap-3">
+
+        <h3 class="text-sm font-medium tracking-wide uppercase text-text-secondary sm:text-sm">Trending Now</h3>
+      </div>
+
+      
+      <div class="hidden lg:flex justify-center items-center gap-2">
         <button
-          class="flex items-center justify-center bg-eigengrau-700 text-white rounded-3xl cursor-pointer p-1 hover:bg-eigengrau-500"
+          class="flex items-center justify-center w-6 h-6 text-text-muted cursor-pointer transition-colors hover:text-text-primary"
           @click="prev()"
+          aria-label="Previous"
           >
-            <svg
-              class="w-12 h-2"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="4"
-                d="M15 19l-7-7 7-7"
-              />
+            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
-        <ul class="flex gap-2">
+        <ul class="flex gap-1">
           <li
             v-for="(p, index) in trendingPages"
             :key="index"
-            :class="index === currentPageIndex ? 'bg-white' : 'bg-eigengrau-600 hover:bg-eigengrau-300'"
-            class="h-1 w-6 cursor-pointer"
+            :class="index === currentPageIndex ? 'bg-text-primary w-6' : 'bg-eigengrau-600 hover:bg-eigengrau-400 w-3'"
+            class="h-0.5 cursor-pointer transition-all duration-200 rounded-full"
             @click="setActivePage(index)"
             >
           </li>
         </ul>
 
-        <button 
-          class="flex items-center justify-center bg-eigengrau-700 text-white rounded-3xl cursor-pointer p-1 hover:bg-eigengrau-500"
+        <button
+          class="flex items-center justify-center w-6 h-6 text-text-muted cursor-pointer transition-colors hover:text-text-primary"
           @click="next()"
+          aria-label="Next"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            class="w-12 h-2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="4"
-              d="M9 5l7 7-7 7"
-            />
+          <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
-      </div> 
+      </div>
     </div>
-      
-    <div 
-      class="w-full max-w-7xl">
+
+    <!-- Carousel -->
+    <div class="w-full max-w-7xl">
       <Carousel
           v-bind="carouselConfig"
           class="w-full max-w-7xl"
           ref="carouselRef"
-        >        
-          <Slide class="border-3 border-transparent hover:border-accent-500 rounded-lg" v-for="s in trendingQuery" :key="s">
-            <TvShowCard 
+        >
+          <Slide class="border-2 border-transparent hover:border-accent-500/60 rounded-md transition-colors" v-for="s in trendingQuery" :key="s">
+            <TvShowCard
               :show="s"
               :useNuxtLink="false"
               :hoverable="true"
-              @click="navigateTo(`/shows/${s.id}`)"  
+              @click="navigateTo(`/shows/${s.id}`)"
             />
           </Slide>
-      </Carousel>      
+      </Carousel>
     </div>
   </div>
 </template>

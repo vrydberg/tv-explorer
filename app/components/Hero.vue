@@ -1,38 +1,94 @@
-<script setup></script>
+<script setup>
+const router = useRouter()
+const searchQuery = ref('')
+const searchInput = ref(null)
+
+const handleSearchSubmit = () => {
+  const query = searchQuery.value.trim()
+  if (query) {
+    router.push({ path: '/search', query: { q: query } })
+    searchQuery.value = ''
+  }
+}
+</script>
 
 <template>
+  <section class="w-full relative z-10">
+    <!-- Background Image -->
+    <div
+      class="absolute inset-0 bg-center bg-cover"
+      style="background-image: url('https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg');"
+    ></div>
 
-    <section v-if="1" class="w-full relative z-10">
-            
-        <div class="flex justify-center items-centers aspect-4/3 bg-[url('https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg')] sm:aspect-16/9 md:aspect-26/9 lg:aspect-36/9 bg-center bg-cover">
-            <div class="absolute inset-0 bg-eigengrau-900/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent sm:h-40 lg:h-48"></div>
+    <!-- Heavy dark overlay for muted effect -->
+    <!-- <div class="absolute inset-0 bg-eigengrau-900/70"></div> -->
 
-            <div
-                class="relative flex flex-col mx-auto items-center text-center justify-center py-6 px-12">
+    <div class="absolute inset-0 bg-eigengrau-900/40"></div>
 
-                    <h1 class="w-full font-serif font-semibold tracking-tight text-4xl text-shadow-lg text-pretty text-text-primary sm:text-4xl md:text-5xl lg:text-6xl lg:max-w-4xl">
-                        Discover your next favorite show
-                    </h1>
 
-                    <p class="hidden mt-4 w-full font-normal text-base text-shadow-lg text-pretty text-text-secondary md:block md:max-w-md lg:mt-5 lg:text-lg lg:max-w-lg">
-                        Deep dive into ratings, insights, and discover what to watch next.
-                    </p>
+    <!-- Gradient overlays for depth -->
+    <div class="absolute inset-0 bg-gradient-to-b from-eigengrau-900/40 via-transparent to-eigengrau-900/80"></div>
 
-                    <div class="mt-6 flex items-center justify-center gap-4 sm:mt-8 md:gap-6">
-                        <a href="#" class="relative inline-flex items-center gap-2 rounded-sm bg-accent-500 px-3 py-1.5 text-sm font-medium text-text-primary transition-all hover:bg-accent-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 sm:px-4 sm:py-2">
-                            <span>Explore</span>
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-sm text-shadow-lg px-3 py-2.5 font-medium text-text-primary transition-colors hover:text-text-secondary">
-                            Learn more
-                        </a>
-                    </div>
-            </div>
+    <!-- Bottom fade to page background -->
+    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent"></div>
+
+    <!-- Content -->
+    <div class="relative flex flex-col items-center justify-center px-6 py-20 sm:px-8 sm:py-24 lg:py-28">
+
+      <!-- Tagline -->
+      <h1 class="font-serif text-2xl font-medium tracking-tight text-text-primary text-center sm:text-3xl lg:text-4xl">
+        What will you watch next?
+      </h1>
+
+      <!-- Search Bar -->
+      <form
+        @submit.prevent="handleSearchSubmit"
+        class="relative w-full max-w-md mt-8 sm:mt-10 lg:mt-12 lg:max-w-lg"
+      >
+        <div class="relative group">
+          <!-- Input -->
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search for a show..."
+            class="w-full bg-eigengrau-900/60 backdrop-blur-sm border border-eigengrau-600 text-text-primary placeholder:text-text-muted rounded-sm pl-12 pr-4 py-3.5 text-base transition-all duration-200 focus:bg-eigengrau-900/80 focus:border-eigengrau-500 focus:outline-none sm:pl-14 sm:pr-20 sm:py-4 sm:text-lg"
+          />
+
+          <!-- Search Icon -->
+          <svg
+            class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-text-secondary pointer-events-none sm:left-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+
+          <!-- Submit hint (desktop) -->
+          <div class="hidden absolute right-4 top-1/2 -translate-y-1/2 sm:flex items-center pointer-events-none">
+            <kbd class="px-2 py-1 text-[10px] font-mono text-text-muted bg-eigengrau-800 border border-eigengrau-600 rounded">
+              Enter
+            </kbd>
+          </div>
         </div>
-    </section>
+      </form>
 
+      <!-- Account Benefit Line -->
+      <p class="mt-6 text-sm text-text-muted sm:mt-8">
+        <NuxtLink
+          to="/register"
+          class="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-text-secondary"
+        >
+          <span>Create an account to save favorites and build your watchlist</span>
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </NuxtLink>
+      </p>
+    </div>
+  </section>
 </template>
+
 <style></style>

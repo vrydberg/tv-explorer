@@ -74,7 +74,7 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
                 :xclass="$route.path === '/' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
                 :class="$route.path === '/' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
               >
-                Browse
+                Home
               </NuxtLink>
             </li>
             <li>

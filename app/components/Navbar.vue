@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import tvIcon from '~/assets/images/icons/tv.png';
+// import tvIcon from '~/assets/images/icons/tv.png';
+
+import tvIcon from '~/assets/images/icons/tvIcon.png';
+
 
 const route = useRoute()
 const router = useRouter()
@@ -53,9 +56,14 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
       <!-- Desktop Layout -->
       <div class="hidden md:flex items-center justify-between">
         <!-- Logo (Left) -->
-        <NuxtLink to="/" class="flex items-center gap-2.5 shrink-0 group">
+        <!-- <NuxtLink to="/" class="flex items-center gap-2.5 shrink-0 group">
           <img :src="tvIcon" alt="TV Explorer App" class="h-5 w-auto opacity-90 group-hover:opacity-100 transition-opacity"/>
-          <span class="text-base font-semibold tracking-tight text-text-primary">Banana Stand</span>
+          <span class="text-base font-semibold tracking-tight text-text-primary">TVX</span>
+        </NuxtLink> -->
+
+        <NuxtLink to="/" class="flex items-center gap-2.5 shrink-0 group">
+          <img :src="tvIcon" alt="TV Explorer App" class="mb-1.5 h-6 w-auto opacity-90 group-hover:opacity-100 transition-opacity"/>
+          <!-- <span class="text-base font-semibold tracking-tight text-text-primary">TVX</span> -->
         </NuxtLink>
 
         <!-- Center: Nav Links + Search -->
@@ -66,15 +74,10 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
               <NuxtLink
                 to="/"
                 class="relative py-1.5 transition-colors duration-200 group"
+                :xclass="$route.path === '/' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
                 :class="$route.path === '/' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
               >
-                Home
-                <span
-                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500"
-                  :class="$route.path === '/'
-                    ? 'block'
-                    : 'hidden group-hover:block'"
-                ></span>
+                Browse
               </NuxtLink>
             </li>
             <li>
@@ -84,31 +87,28 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
                 :class="$route.path === '/explorer' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
               >
                 Explorer
-                <span
-                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500"
-                  :class="$route.path === '/explorer'
-                    ? 'block'
-                    : 'hidden group-hover:block'"
-                ></span>
               </NuxtLink>
             </li>
             <!-- <li>
               <NuxtLink
-                to="/about"
-                class="relative py-1.5 group"
-                :class="$route.path === '/about'
-                  ? 'text-text-primary'
-                  : 'text-text-muted hover:text-text-primary'"
+                to="/lists"
+                class="relative py-1.5 transition-colors duration-200 group"
+                :class="$route.path === '/lists' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
               >
-                About
-                <span
-                  class="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent-500"
-                  :class="$route.path === '/about'
-                    ? 'block'
-                    : 'hidden group-hover:block'"
-                ></span>
+                Lists
               </NuxtLink>
             </li> -->
+
+            <li>
+              <NuxtLink
+                to="/about"
+                class="relative py-1.5 transition-colors duration-200 group"
+                :class="$route.path === '/about' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'"
+              >
+                About
+                
+              </NuxtLink>
+            </li>
           </ul>
 
           <!-- Always-Visible Search Bar -->
@@ -126,18 +126,21 @@ const isShowPage = computed(() => route.path.startsWith('/shows/'))
               v-model="searchQuery"
               type="text"
               placeholder="Search shows..."
-              class="w-48 lg:w-56 bg-eigengrau-850/60 border border-eigengrau-700/50 text-text-primary placeholder:text-text-subtle rounded-lg pl-9 pr-4 py-1.5 text-sm transition-colors duration-200 focus:bg-eigengrau-850 focus:border-accent-500/50 focus:outline-none"
+              class="w-48 lg:w-56 bg-eigengrau-850/60 border border-eigengrau-700/50 text-text-primary placeholder:text-text-subtle rounded-lg pl-9 pr-4 py-1.5 text-xs transition-colors duration-200 focus:bg-eigengrau-850 focus:border-accent-500/50 focus:outline-none"
             />
           </form>
         </div>
 
-        <!-- Once implemented login page change -->
-        <NuxtLink
-          to="/"
-          class="shrink-0 px-3.5 py-1 text-[13px] font-medium tracking-wide bg-accent-500 hover:bg-accent-400 text-white rounded transition-colors duration-200"
-        >
-          Login
-        </NuxtLink>
+
+        <div class="flex gap-2">
+          <NuxtLink
+            to="/login"
+            xclass="shrink-0 px-3.5 py-1 text-[13px] font-medium tracking-wide bg-accent-500 hover:bg-accent-400 text-white rounded transition-colors duration-200"
+            class="shrink-0 px-3 py-1 text-xs font-medium bg-accent-500 hover:bg-accent-400 text-white rounded"
+          >
+            Login
+          </NuxtLink>
+        </div>
       </div>
 
       <!-- Mobile Layout -->

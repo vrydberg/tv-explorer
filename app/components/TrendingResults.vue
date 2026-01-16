@@ -29,7 +29,7 @@ const carouselConfig = {
   itemsToShow: 3,
   snapAlign: 'start',
   wrapAround: true,
-  mouseDrag: true, 
+  mouseDrag: true,
   touchDrag: true,
   breakpoints: {
     640: {
@@ -59,19 +59,18 @@ const carouselConfig = {
       touchDrag: false,
     }
   },
-  
+
 }
 
 const currentSlide = ref(0)
 const currentPageIndex = ref(0)
-const slidesPerPage = ref(1) 
+const slidesPerPage = ref(1)
 
 const updateWindowSize = () => {
   windowSize.value.height = window.innerHeight
   windowSize.value.width = window.innerWidth
 }
 
-// Need to go over this again to see what is necessary
 const trendingPages = computed(() => {
   const width = windowSize.value.width
 
@@ -91,12 +90,12 @@ const trendingPages = computed(() => {
 
 const next = () => {
   currentPageIndex.value += 1
-  
+
   if (currentPageIndex.value >= trendingPages.value) {
     currentPageIndex.value = 0
   }
 
-  carouselRef.value.slideTo(currentPageIndex.value * slidesPerPage.value) 
+  carouselRef.value.slideTo(currentPageIndex.value * slidesPerPage.value)
 }
 
 const prev = () => {
@@ -106,7 +105,7 @@ const prev = () => {
     currentPageIndex.value = trendingPages.value - 1
   }
 
-  carouselRef.value.slideTo(currentPageIndex.value * slidesPerPage.value) 
+  carouselRef.value.slideTo(currentPageIndex.value * slidesPerPage.value)
 }
 
 const setActivePage = (index) => {
@@ -114,71 +113,86 @@ const setActivePage = (index) => {
   carouselRef.value.slideTo(index * slidesPerPage.value + 1)
 }
 
-
+// Format rank with leading zero for single digits
+const formatRank = (index) => {
+  return String(index + 1).padStart(2, '0')
+}
 </script>
 
 <template>
-  <div class="w-full flex justify-between items-center flex-col px-6 gap-3">
+  <div class="w-full px-6">
+    <div class="max-w-7xl mx-auto">
 
-    
-    <div class="w-full max-w-7xl flex items-center justify-between">
+      <!-- Header -->
+      <div class="flex items-end justify-between mb-4 sm:mb-5">
+        <h3 class="text-sm font-medium tracking-wide uppercase text-text-secondary">Trending Now</h3>
 
-
-      <div class="flex items-center gap-3">
-
-        <h3 class="text-sm font-medium tracking-wide uppercase text-text-secondary sm:text-sm">Trending Now</h3>
-      </div>
-
-      
-      <div class="hidden lg:flex justify-center items-center gap-2">
-        <button
-          class="flex items-center justify-center w-6 h-6 text-text-muted cursor-pointer transition-colors hover:text-text-primary"
-          @click="prev()"
-          aria-label="Previous"
-          >
-            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-        <ul class="flex gap-1">
-          <li
-            v-for="(p, index) in trendingPages"
-            :key="index"
-            :class="index === currentPageIndex ? 'bg-text-primary w-6' : 'bg-eigengrau-600 hover:bg-eigengrau-400 w-3'"
-            class="h-0.5 cursor-pointer transition-all duration-200 rounded-full"
-            @click="setActivePage(index)"
+        <!-- Navigation -->
+        <div class="hidden lg:flex items-center gap-4">
+          <ul class="flex gap-1">
+            <li
+              v-for="(p, index) in trendingPages"
+              :key="index"
+              :class="index === currentPageIndex ? 'bg-text-muted w-5' : 'bg-eigengrau-700 hover:bg-eigengrau-600 w-2'"
+              class="h-0.5 cursor-pointer transition-all duration-200 rounded-full"
+              @click="setActivePage(index)"
             >
-          </li>
-        </ul>
+            </li>
+          </ul>
 
-        <button
-          class="flex items-center justify-center w-6 h-6 text-text-muted cursor-pointer transition-colors hover:text-text-primary"
-          @click="next()"
-          aria-label="Next"
-        >
-          <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+          <div class="flex gap-1">
+            <button
+              class="flex items-center justify-center w-6 h-6 text-text-subtle cursor-pointer transition-colors hover:text-text-secondary"
+              @click="prev()"
+              aria-label="Previous"
+            >
+              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <button
+              class="flex items-center justify-center w-6 h-6 text-text-subtle cursor-pointer transition-colors hover:text-text-secondary"
+              @click="next()"
+              aria-label="Next"
+            >
+              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Carousel -->
-    <div class="w-full max-w-7xl">
+      <!-- Carousel -->
       <Carousel
-          v-bind="carouselConfig"
-          class="w-full max-w-7xl"
-          ref="carouselRef"
+        v-bind="carouselConfig"
+        class="w-full"
+        ref="carouselRef"
+      >
+        <Slide
+          v-for="(s, index) in trendingQuery"
+          :key="s.id"
         >
-          <Slide class="border-2 border-transparent hover:border-accent-500/60 rounded-md transition-colors" v-for="s in trendingQuery" :key="s">
-            <TvShowCard
-              :show="s"
-              :useNuxtLink="false"
-              :hoverable="true"
-              @click="navigateTo(`/shows/${s.id}`)"
-            />
-          </Slide>
+          <div class="relative group">
+            <!-- Card -->
+            <div class="border-2 border-transparent hover:border-accent-500/50 rounded-md transition-colors">
+              <TvShowCard
+                :show="s"
+                :useNuxtLink="false"
+                :hoverable="true"
+                @click="navigateTo(`/shows/${s.id}`)"
+              />
+            </div>
+
+            <!-- Rank indicator - subtle monospace badge -->
+            <div class="absolute top-2 left-2 pointer-events-none">
+              <span class="font-mono text-[10px] tracking-tight text-text-primary/70 bg-eigengrau-900/70 backdrop-blur-sm px-1.5 py-0.5 rounded-sm">
+                {{ formatRank(index) }}
+              </span>
+            </div>
+          </div>
+        </Slide>
       </Carousel>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <script setup>
-import tvIcon from '~/assets/images/icons/tv.png'
+import tvIcon from '~/assets/images/icons/tvIcon.png'
 </script>
 
 <template>
@@ -10,10 +10,11 @@ import tvIcon from '~/assets/images/icons/tv.png'
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
         <div class="flex items-center gap-3">
-          <NuxtLink to="/" class="flex items-center gap-2 group">
-            <img :src="tvIcon" alt="TV Explorer" class="h-4 w-auto opacity-70 group-hover:opacity-100 transition-opacity duration-200"/>
-            <span class="text-sm font-medium text-text-muted group-hover:text-text-primary transition-colors duration-200">Banana Stand</span>
+
+          <NuxtLink to="/" class="flex items-center gap-2.5 shrink-0 group">
+            <img :src="tvIcon" alt="TV Explorer App" class="mb-1.5 h-4 w-auto opacity-90 group-hover:opacity-100 transition-opacity"/>
           </NuxtLink>
+          
           <span class="hidden sm:inline text-text-subtle">&middot;</span>
           <span class="hidden sm:inline text-xs text-text-subtle">&copy; {{ new Date().getFullYear() }}</span>
         </div>

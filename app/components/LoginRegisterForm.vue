@@ -8,7 +8,7 @@ const password = ref('')
 const content = computed(() => {
   const isLogin = props.mode === 'login'
   return {
-    heading: isLogin ? 'Welcome back' : 'Get started',
+    heading: isLogin ? 'Login' : 'Get started',
     subheading: isLogin
       ? 'Sign in to access your watchlist and favorites'
       : 'Register to start tracking and creating collections',

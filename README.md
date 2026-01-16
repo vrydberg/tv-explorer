@@ -14,13 +14,18 @@ A full-stack TV discovery platform with advanced filtering, interactive D3.js vi
 ## Screenshots
 
 <div align="center">
-  <img src="./public/screenshots/landing.png" alt="Landing Page" width="49%" />
-  <img src="./public/screenshots/explorer.png" alt="Explorer Page" width="49%"/>
+  <img src="./public/screenshots/home.png" alt="Home Page" width="49%" />
+  <img src="./public/screenshots/explorer-system.png" alt="Explorer Page" width="49%"/>
 </div>
 
 <div align="center">
-  <img src="./public/screenshots/show-details.png" alt="TV Show Details" width="49%" />
-  <img src="./public/screenshots/show-metrics.png" alt="Show Metrics" width="49%" />
+  <img src="./public/screenshots/expanded-show.png" alt="TV Show Details" width="49%" />
+  <img src="./public/screenshots/show-visualizations.png" alt="Show Metrics" width="49%" />
+</div>
+
+<div align="center">
+  <img src="./public/screenshots/search-results.png" alt="Search Results Page" width="49%" />
+  <img src="./public/screenshots/account-form.png" alt="Account Form Page" width="49%"/>
 </div>
 
 ## Features

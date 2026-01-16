@@ -109,7 +109,7 @@ const sortedEpisodes = computed(() => {
         </div>
 
         <RatingHeatmap
-          class="flex-1"
+          class="flex-1 mb-8"
           :ratings="showData.ratings" 
           >
         </RatingHeatmap>

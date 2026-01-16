@@ -64,15 +64,15 @@ const sortedEpisodes = computed(() => {
               <li 
                 v-for="episode in sortedEpisodes.slice(0, 3)"
                 class="flex justify-between items-center gap-3">
-                <p class="text-xs font-medium text-gray-400 w-3/4 truncate"
+                <p class="text-xs font-medium text-text-tertiary w-3/4 truncate"
                   :title="episode.title"
                 >
-                  <span class="text-xs text-gray-400 inline-block w-14 pr-2">
+                  <span class="text-xs text-text-tertiary inline-block w-14 pr-2">
                     S{{ episode.season_number }}E{{ episode.episode_number }}
                   </span>
                   {{ episode.title }}
                 </p>
-                <span class="text-xs font-medium text-emerald-600 shrink-0">{{ episode.rating.toFixed(1) }}</span>
+                <span class="text-xs font-medium text-rating-high shrink-0">{{ episode.rating.toFixed(1) }}</span>
               </li>
             </ul>
           </InfographicCard>
@@ -83,21 +83,21 @@ const sortedEpisodes = computed(() => {
                   v-for="episode in sortedEpisodes.slice(-3).reverse()"  
                   class="flex justify-between items-center gap-3"
                 >
-                  <p class="text-xs font-medium text-gray-400 w-3/4 truncate"
+                  <p class="text-xs font-medium text-text-tertiary w-3/4 truncate"
                     :title="episode.title"
                   >
-                    <span class="text-xs text-gray-400 inline-block w-14 pr-2">
+                    <span class="text-xs text-text-tertiary inline-block w-14 pr-2">
                       S{{ episode.season_number }}E{{ episode.episode_number }}
                     </span>
                     {{ episode.title }}
                   </p>
-                  <span class="text-xs font-medium text-red-400 shrink-0">{{episode.rating.toFixed(1)}}</span>
+                  <span class="text-xs font-medium text-rating-low shrink-0">{{episode.rating.toFixed(1)}}</span>
                 </li>
               </ul>
           </InfographicCard>
 
           <InfographicCard
-            class="md:col-span-2 border"
+            class="md:col-span-2"
             title="Rating Sparkline"
           >
             <RatingSparkline
